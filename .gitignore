@@ -1,14 +1,63 @@
-# Terraform local and state files
+# ==============================================================================
+# Terraform Generated Files & Cache
+# ==============================================================================
+# Local .terraform directories
 **/.terraform/*
+.terraform/
+**/.terraform/
+
+# Terraform state files
 *.tfstate
 *.tfstate.*
+*.tfstate.backup
+
+# State lock files
+.terraform.tfstate.lock.info
+
+# Crash & debug logs
 crash.log
 crash.*.log
+*.log
+
+# Plan files
+*.tfplan
+*.tfplan.*
+*.plan
+plan.out
+tfplan
+
+# Variable files with sensitive data / environment configs
 *.tfvars
 *.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Whitelist example variable files
+!*.tfvars.example
+!terraform.tfvars.example
+
+# Terraform override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# CLI configuration files
 .terraformrc
 terraform.rc
+
+# ==============================================================================
+# OS & Editor Specific Files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
