@@ -1,57 +1,57 @@
-# 🚀 Laboratorio Kubernetes en Google Cloud Platform (GCP)
+# 🚀 Kubernetes Lab on Google Cloud Platform (GCP)
 
-Este repositorio contiene la arquitectura completa en dos capas para desplegar, gestionar y observar aplicaciones nativas de la nube en **Google Kubernetes Engine (GKE Autopilot)**.
+This repository provides a complete two-layer architecture to deploy, manage, and observe cloud-native applications on **Google Kubernetes Engine (GKE Autopilot)**.
 
 ---
 
-## 🏗️ Estructura del Proyecto
+## 🏗️ Project Structure
 
 ```text
 .
-├── terraform/                # [Capa 1] Infraestructura Base como Código (IaC)
-│   ├── main.tf               # VPC, Subnets, Cloud Router, Cloud NAT y Clúster GKE Autopilot
-│   ├── variables.tf          # Definición de variables parametrizables
-│   ├── outputs.tf            # Endpoints, comando kubectl y datos de red
-│   └── provider.tf           # Configuración del proveedor HashiCorp Google Cloud
+├── terraform/                # [Layer 1] Base Infrastructure as Code (IaC)
+│   ├── main.tf               # VPC, Subnets, Cloud Router, Cloud NAT, and GKE Autopilot Cluster
+│   ├── variables.tf          # Configurable variable definitions
+│   ├── outputs.tf            # Endpoints, kubectl connection command, and network metadata
+│   └── provider.tf           # HashiCorp Google Cloud provider configuration
 │
-└── kubernetes/               # [Capa 2] Cargas de Trabajo y Control Plane Didáctico
+└── kubernetes/               # [Layer 2] Workloads & Didactic Control Plane
     └── manifests/
-        ├── 00-namespaces/    # Espacios de nombres 'boutique' y 'headlamp'
-        ├── 01-boutique/      # Suite de microservicios de Google Online Boutique
+        ├── 00-namespaces/    # 'boutique' and 'headlamp' namespaces
+        ├── 01-boutique/      # Google Online Boutique microservices suite
         ├── 02-dashboard/     # Headlamp UI Dashboard + RBAC
-        ├── kustomization.yaml# Despliegue unificado con Kustomize
-        └── README.md         # Guía detallada paso a paso y laboratorios prácticos
+        ├── kustomization.yaml# Unified atomic deployment with Kustomize
+        └── README.md         # In-depth architectural guide and hands-on lab exercises
 ```
 
 ---
 
-## 📚 Capas del Laboratorio
+## 📚 Architecture Layers
 
-### 1. Capa 1: Infraestructura Base (Terraform)
-- **VPC Nativa y Aislada:** `gke-vpc` con subred `10.10.0.0/20` y rangos secundarios dedicados para Pods (`10.20.0.0/16`) y Services (`10.30.0.0/20`).
-- **Cloud Router & NAT:** Salida a Internet transparente y segura para nodos privados.
-- **GKE Autopilot:** Clúster completamente gestionado en `us-central1` con nodos privados y endpoint público para administración remota.
-- Consulta [terraform/](file:///home/joanr/agentic-platforms/GCP/K8SLab1/terraform) para detalles de aprovisionamiento.
+### 1. Layer 1: Base Infrastructure (Terraform)
+- **Native & Isolated VPC:** `gke-vpc` with subnet `10.10.0.0/20` and dedicated secondary ranges for Pods (`10.20.0.0/16`) and Services (`10.30.0.0/20`).
+- **Cloud Router & Cloud NAT:** Secure, transparent egress for private nodes to pull container images and access external APIs.
+- **GKE Autopilot:** Fully managed Kubernetes cluster in `us-central1` with private nodes and a public endpoint for administrative access.
+- See [terraform/](file:///home/joanr/agentic-platforms/GCP/K8SLab1/terraform) for provisioning details.
 
-### 2. Capa 2: Aplicación y Control Plane (Kubernetes Manifests)
-- **Online Boutique:** 12 microservicios políglotas (Go, C#, Python, Node.js, Java, Redis) con balanceador público de GCP (`LoadBalancer`) asignado al frontend.
-- **Headlamp Dashboard:** Panel visual para monitorizar pods, deployments, servicios, logs y consumo en caliente vía `kubectl port-forward`.
-- Consulta la guía completa de despliegue y laboratorios en [kubernetes/manifests/README.md](file:///home/joanr/agentic-platforms/GCP/K8SLab1/kubernetes/manifests/README.md).
+### 2. Layer 2: Application & Control Plane (Kubernetes Manifests)
+- **Online Boutique:** 12 polyglot microservices (Go, C#, Python, Node.js, Java, Redis) with a GCP external `LoadBalancer` assigned to the frontend.
+- **Headlamp Dashboard:** Modern, reactive web UI for inspecting pods, deployments, services, logs, and real-time resource utilization via `kubectl port-forward`.
+- See the complete deployment guide and lab exercises in [kubernetes/manifests/README.md](file:///home/joanr/agentic-platforms/GCP/K8SLab1/kubernetes/manifests/README.md).
 
 ---
 
-## ⚡ Inicio Rápido (Despliegue de Capa 2)
+## ⚡ Quick Start (Layer 2 Deployment)
 
 ```bash
-# 1. Enlazar credenciales con tu clúster
+# 1. Connect kubectl credentials to your cluster
 gcloud container clusters get-credentials gke-autopilot-lab --region us-central1 --project bitcitychamp-project
 
-# 2. Desplegar toda la arquitectura de la Capa 2
+# 2. Deploy the complete Layer 2 architecture
 kubectl apply -k kubernetes/manifests
 
-# 3. Consultar la IP externa de la tienda
+# 3. Retrieve the external IP for the storefront
 kubectl get svc frontend-external -n boutique -w
 
-# 4. Acceder al dashboard de control
+# 4. Access the Headlamp control plane dashboard
 kubectl port-forward -n headlamp svc/headlamp 8080:80
 ```

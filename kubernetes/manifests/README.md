@@ -1,26 +1,26 @@
-# 🏛️ Capa 2: Aplicación y Control Plane Didáctico (Cloud Native & Kubernetes)
+# 🏛️ Layer 2: Workloads & Didactic Control Plane (Cloud Native & Kubernetes)
 
-Bienvenido a la **Capa 2 del Laboratorio de Kubernetes en Google Cloud Platform (GCP)**. Como Arquitecto de Cloud Native e Instructor Senior de Kubernetes, esta guía está estructurada con rigor de nivel de producción y un enfoque 100% pedagógico para observar, interactuar y diagnosticar cargas de trabajo en un clúster **GKE Autopilot**.
+Welcome to **Layer 2 of the Kubernetes Lab on Google Cloud Platform (GCP)**. Structured with production-grade engineering practices and an educational hands-on focus, this guide walks you through deploying, observing, interacting with, and troubleshooting workloads on a **GKE Autopilot** cluster.
 
 ---
 
-## 📐 1. Arquitectura del Sistema
+## 📐 1. System Architecture
 
-El despliegue se divide en dos dominios aislados por Namespaces:
-1. **`boutique` (Capa de Aplicación):** La suite completa de microservicios políglotas de **Google Cloud Online Boutique**, diseñada para demostrar comunicación síncrona gRPC/HTTP, persistencia en caché con Redis y balanceo de carga L4 con Google Cloud Load Balancing.
-2. **`headlamp` (Capa de Observabilidad y Control):** Interfaz gráfica moderna, reactiva y ligera desarrollada bajo el proyecto **Kubernetes SIGs UI**, configurada con RBAC de privilegios controlados para inspección en tiempo real.
+The deployment is split into two isolated domains via Namespaces:
+1. **`boutique` (Application Layer):** The complete polyglot microservices suite from **Google Cloud Online Boutique**, designed to demonstrate synchronous gRPC/HTTP communication, Redis in-memory caching, and L4 external load balancing via Google Cloud Load Balancing.
+2. **`headlamp` (Observability & Control Layer):** A modern, reactive, lightweight web dashboard developed under the **Kubernetes SIGs UI** project, configured with scoped RBAC for real-time cluster inspection.
 
 ```mermaid
 graph TD
-    subgraph Internet ["🌐 Internet / Usuario"]
-        User["💻 Navegador Web"]
+    subgraph Internet ["🌐 Internet / Users"]
+        User["💻 Web Browser"]
         Instructor["👨‍🏫 Terminal / Admin"]
     end
 
     subgraph GCP ["☁️ Google Cloud Platform (VPC: gke-vpc)"]
-        GCP_LB["⚖️ Google Cloud External Load Balancer (IP Pública)"]
+        GCP_LB["⚖️ Google Cloud External Load Balancer (Public IP)"]
         
-        subgraph GKE ["☸️ Clúster GKE Autopilot (us-central1)"]
+        subgraph GKE ["☸️ GKE Autopilot Cluster (us-central1)"]
             
             subgraph NS_Boutique ["Namespace: boutique"]
                 FE_SVC["Service: frontend-external (LoadBalancer)"]
@@ -54,47 +54,47 @@ graph TD
     FE --> CART & CATALOG & CURRENCY & SHIPPING & CHECKOUT & RECOM & AD
     CART --> REDIS
     CHECKOUT --> PAYMENT & SHIPPING & EMAIL & CART & CATALOG & CURRENCY
-    LOADGEN -.->|Tráfico Sintético| FE
+    LOADGEN -.->|Synthetic Traffic| FE
     
     Instructor -->|kubectl port-forward :8080| HL_SVC
     HL_SVC --> HL
-    HL -.->|Lee métricas y estado del clúster| RBAC
+    HL -.->|Reads cluster metrics and state| RBAC
 ```
 
 ---
 
-## 🗂️ 2. Estructura de Manifiestos
+## 🗂️ 2. Manifest Directory Structure
 
 ```text
 kubernetes/manifests/
 ├── 00-namespaces/
-│   └── namespace.yaml                  # Define los namespaces 'boutique' y 'headlamp'
+│   └── namespace.yaml                  # Defines 'boutique' and 'headlamp' namespaces
 ├── 01-boutique/
-│   ├── 01-emailservice.yaml            # Notificaciones por correo (Python)
-│   ├── 02-checkoutservice.yaml         # Orquestador del flujo de compra (Go)
-│   ├── 03-recommendationservice.yaml   # Motor de recomendaciones de productos (Python)
-│   ├── 04-frontend.yaml                # UI Web + Service LoadBalancer externo (Go)
-│   ├── 05-paymentservice.yaml          # Procesamiento de tarjetas y pagos (Node.js)
-│   ├── 06-productcatalogservice.yaml   # Búsqueda y catálogo de productos (Go)
-│   ├── 07-cartservice.yaml             # Gestión de carritos de compra (C# .NET)
-│   ├── 08-currencyservice.yaml         # Conversión de divisas internacionales (Node.js)
-│   ├── 09-shippingservice.yaml         # Cálculo de costes y tracking de envíos (Go)
-│   ├── 10-adservice.yaml               # Anuncios contextuales orientados (Java)
-│   ├── 11-redis-cart.yaml              # Persistencia en memoria para carritos (Redis)
-│   ├── 12-loadgenerator.yaml          # Generador de tráfico sintético en segundo plano
-│   └── release-complete.yaml           # Manifiesto consolidado de los 12 microservicios
+│   ├── 01-emailservice.yaml            # Email notifications (Python)
+│   ├── 02-checkoutservice.yaml         # Checkout flow orchestrator (Go)
+│   ├── 03-recommendationservice.yaml   # Product recommendation engine (Python)
+│   ├── 04-frontend.yaml                # Web UI + External LoadBalancer service (Go)
+│   ├── 05-paymentservice.yaml          # Payment and credit card processing (Node.js)
+│   ├── 06-productcatalogservice.yaml   # Product search & catalog (Go)
+│   ├── 07-cartservice.yaml             # Shopping cart state management (C# .NET)
+│   ├── 08-currencyservice.yaml         # International currency conversions (Node.js)
+│   ├── 09-shippingservice.yaml         # Shipping cost calculation and tracking (Go)
+│   ├── 10-adservice.yaml               # Targeted contextual ads (Java)
+│   ├── 11-redis-cart.yaml              # In-memory key-value cache for carts (Redis)
+│   ├── 12-loadgenerator.yaml          # Background synthetic traffic generator (Locust)
+│   └── release-complete.yaml           # Consolidated manifest for all 12 microservices
 ├── 02-dashboard/
-│   └── 01-headlamp.yaml                # Headlamp UI, ServiceAccount, RBAC y Secret Token
-├── kustomization.yaml                  # Declaración Kustomize para despliegue atómico
-└── README.md                           # Esta guía técnica e interactiva
+│   └── 01-headlamp.yaml                # Headlamp UI, ServiceAccount, RBAC, and Secret token
+├── kustomization.yaml                  # Kustomize declaration for unified atomic deployment
+└── README.md                           # This technical and interactive guide
 ```
 
 ---
 
-## 🚀 3. Guía de Despliegue Paso a Paso
+## 🚀 3. Step-by-Step Deployment Guide
 
-### Prerrequisito: Conectar `kubectl` a tu clúster GKE
-Asegúrate de que tu CLI esté enlazada al clúster aprovisionado por Terraform:
+### Prerequisite: Connect `kubectl` to your GKE Cluster
+Ensure your local CLI is authenticated against the cluster provisioned by Terraform:
 
 ```bash
 gcloud container clusters get-credentials gke-autopilot-lab \
@@ -102,15 +102,15 @@ gcloud container clusters get-credentials gke-autopilot-lab \
     --project bitcitychamp-project
 ```
 
-Verifica la conexión:
+Verify connectivity:
 ```bash
 kubectl cluster-info
 ```
 
 ---
 
-### Opción A: Despliegue Atómico con Kustomize (Recomendado)
-Aplica toda la arquitectura (Namespaces, Microservicios y Dashboard) en un único comando:
+### Option A: Atomic Deployment via Kustomize (Recommended)
+Apply the complete architecture (Namespaces, Microservices, and Dashboard) with a single command:
 
 ```bash
 kubectl apply -k kubernetes/manifests
@@ -118,130 +118,131 @@ kubectl apply -k kubernetes/manifests
 
 ---
 
-### Opción B: Despliegue Modular Paso a Paso (Didáctico)
+### Option B: Modular Step-by-Step Deployment (Didactic)
 
-#### Paso 1: Crear los Espacios de Nombres (Namespaces)
+#### Step 1: Create the Namespaces
 ```bash
 kubectl apply -f kubernetes/manifests/00-namespaces/namespace.yaml
 ```
-Verifica su creación:
+Verify creation:
 ```bash
 kubectl get namespaces -L app.kubernetes.io/part-of
 ```
 
-#### Paso 2: Desplegar la Tienda de Microservicios
-Puedes desplegar el archivo consolidado:
+#### Step 2: Deploy the Microservices Storefront
+You can apply the consolidated manifest:
 ```bash
 kubectl apply -f kubernetes/manifests/01-boutique/release-complete.yaml
 ```
-*O aplicar cada microservicio individualmente desde `kubernetes/manifests/01-boutique/` si deseas explicar a tu equipo la función de cada pod.*
+*Or deploy each service individually from `kubernetes/manifests/01-boutique/` to explain each component's role to your team.*
 
-Supervisa el aprovisionamiento de los pods (en GKE Autopilot, el clúster escalará dinámicamente nuevos nodos para albergar las cargas):
+Monitor pod provisioning (in GKE Autopilot, the cluster dynamically provisions and scales worker nodes to accommodate workloads):
 ```bash
 kubectl get pods -n boutique -w
 ```
-*(Espera a que todos los pods alcancen el estado `Running` 1/1).*
+*(Wait until all pods reach the `Running` 1/1 state).*
 
-#### Paso 3: Desplegar el Panel de Control Visual (Headlamp)
+#### Step 3: Deploy the Visual Control Plane (Headlamp)
 ```bash
 kubectl apply -f kubernetes/manifests/02-dashboard/01-headlamp.yaml
 ```
-Verifica que el pod del dashboard esté listo:
+Verify the dashboard rollout:
 ```bash
 kubectl rollout status deployment/headlamp -n headlamp
 ```
 
 ---
 
-## 🌐 4. Acceso a la Tienda de Microservicios (Online Boutique)
+## 🌐 4. Accessing the Microservices Storefront (Online Boutique)
 
-El servicio `frontend-external` está configurado con `type: LoadBalancer`. GCP aprovisionará automáticamente un balanceador de carga de red externo y le asignará una dirección IP pública.
+The `frontend-external` service is configured with `type: LoadBalancer`. Google Cloud automatically provisions an external network load balancer and assigns a public IP address.
 
-### 1. Obtener la IP Pública
-Ejecuta el siguiente comando:
+### 1. Retrieve the Public IP
+Run:
 ```bash
 kubectl get svc frontend-external -n boutique
 ```
 
-Salida esperada:
+Expected output:
 ```text
 NAME                TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
 frontend-external   LoadBalancer   10.30.12.84    34.123.45.67     80:31234/TCP   2m
 ```
 
 > [!NOTE]
-> Si en `EXTERNAL-IP` aparece `<pending>`, GCP aún está asociando la regla de reenvío del balanceador. Espera entre 30 y 60 segundos y vuelve a consultar con `kubectl get svc frontend-external -n boutique -w`.
+> If `EXTERNAL-IP` displays `<pending>`, GCP is still binding the forwarding rule and health checks. Wait 30 to 60 seconds and run `kubectl get svc frontend-external -n boutique -w`.
 
-### 2. Navegar en la Tienda
-Abre en tu navegador web:
+### 2. Explore the Storefront
+Open in your browser:
 ```text
 http://<EXTERNAL-IP>
 ```
-Podrás interactuar añadiendo productos al carrito, cambiando la divisa (USD, EUR, JPY) y completando un pedido.
+You can browse products, add items to your cart, switch currencies (USD, EUR, JPY), and place orders.
 
 ---
 
-## 📊 5. Acceso a la Interfaz de Control Gráfica (Headlamp UI)
+## 📊 5. Accessing the Visual Control Plane (Headlamp UI)
 
-Por seguridad y mejores prácticas de arquitectura en la nube, el dashboard se expone mediante `ClusterIP` y se accede de forma segura mediante túnel local cifrado (`kubectl port-forward`).
+Following cloud-native security best practices, the dashboard is exposed via `ClusterIP` and accessed through a secure, local encrypted tunnel (`kubectl port-forward`).
 
-### 1. Iniciar el Port-Forward Local
-Abre una terminal y ejecuta:
+### 1. Start the Local Port-Forward
+Run in your terminal:
 ```bash
 kubectl port-forward -n headlamp svc/headlamp 8080:80
 ```
 
-### 2. Obtener el Token de Autenticación RBAC
-En **GKE Autopilot** (Kubernetes con OIDC de Google Cloud activado), el API Server valida la firma OIDC y la audiencia (`aud`) del clúster. Por ello, genera el token dinámico con:
+### 2. Generate the RBAC Authentication Token
+On **GKE Autopilot** (where Google Cloud OIDC token validation is enforced), the Kubernetes API Server validates OIDC signatures and cluster audience (`aud`). Generate a dynamic token using:
 
 ```bash
 kubectl create token headlamp-admin -n headlamp --duration=48h
 ```
 
-*(Copia la cadena generada y pégala en el campo Token del panel).*
+*(Copy the generated token string to paste into the login screen).*
 
-### 3. Iniciar Sesión en Headlamp
-1. Entra en tu navegador a: **[http://localhost:8080](http://localhost:8080)**
-2. Selecciona la opción de autenticación mediante **Token**.
-3. Pega el token obtenido en el paso anterior y haz clic en **Sign In**.
+### 3. Log into Headlamp
+1. Navigate to: **[http://localhost:8080](http://localhost:8080)**
+2. Select the **Token** authentication option.
+3. Paste the token from step 2 and click **Sign In**.
 
 ---
 
-## 🔬 6. Laboratorios Didácticos de Observación en Vivo
+## 🔬 6. Hands-On Observability & Diagnostics Labs
 
-Como instructor o evaluador del sistema, puedes realizar los siguientes experimentos prácticos para evidenciar las capacidades de Kubernetes y GKE Autopilot:
+Use these practical exercises to demonstrate core Kubernetes and GKE Autopilot capabilities:
 
-### Laboratorio A: Auto-recuperación (Self-Healing de Pods)
-1. En Headlamp, abre la sección **Workloads > Pods** filtrando por el namespace `boutique`.
-2. En tu terminal, elimina intencionalmente el pod del frontend o del catálogo de productos:
+### Lab A: Self-Healing Pods
+1. In Headlamp, open **Workloads > Pods** filtered by the `boutique` namespace.
+2. In your terminal, delete the frontend or product catalog pod:
    ```bash
    kubectl delete pod -l app=productcatalogservice -n boutique
    ```
-3. Observa en Headlamp cómo el **ReplicaSet** detecta inmediatamente la discrepancia con el estado deseado (`desired state`) y crea un pod sustituto en cuestión de segundos sin caída del servicio.
+3. Watch Headlamp: the **ReplicaSet** instantly reconciles the observed state against the desired state, spinning up a healthy replacement pod in seconds with zero downtime.
 
-### Laboratorio B: Inyección y Análisis de Tráfico Sintético
-El microservicio `loadgenerator` utiliza Locust para simular usuarios concurrentes navegando, añadiendo artículos y comprando.
-1. Observa los logs en vivo del generador de tráfico:
+### Lab B: Synthetic Traffic Injection & Monitoring
+The `loadgenerator` microservice uses Locust to simulate concurrent user traffic browsing products, managing carts, and checking out.
+1. Stream the live traffic generator logs:
    ```bash
    kubectl logs -n boutique -l app=loadgenerator -c main -f
    ```
-2. En Headlamp, examina el consumo de CPU y memoria de `frontend` y `cartservice` conforme absorben las peticiones recurrentes.
+2. In Headlamp, observe CPU and memory usage for `frontend` and `cartservice` as they handle requests.
 
-### Laboratorio C: Inspección de Logs y Terminal Interactiva desde Headlamp
-1. En Headlamp, haz clic sobre el pod `redis-cart`.
-2. En la barra superior, presiona el botón **Logs** para ver las lecturas y escrituras en memoria en tiempo real.
-3. Presiona el botón **Terminal** para abrir una shell interactiva dentro del contenedor y ejecutar `redis-cli ping` (recibirás `PONG`).
+### Lab C: Live Log Inspection & Interactive Container Terminal
+1. In Headlamp, click on the `redis-cart` pod.
+2. Click **Logs** in the top navigation bar to view real-time cache reads and writes.
+3. Click **Terminal** to open an interactive shell inside the container and test with `redis-cli ping` (you will receive `PONG`).
 
 ---
 
-## 🧹 7. Limpieza de Recursos de la Capa 2
+## 🧹 7. Cleaning Up Layer 2 Resources
 
-Cuando concluyas las pruebas y desees liberar los microservicios sin destruir la infraestructura base de Terraform:
+When testing is complete and you want to tear down the workloads without destroying the underlying Terraform infrastructure:
 
 ```bash
-# Elimina todos los recursos desplegados mediante Kustomize
+# Delete all resources managed via Kustomize
 kubectl delete -k kubernetes/manifests
 
-# O elimina directamente los namespaces para purga total en cascada
+# Or delete the namespaces directly for a clean cascading teardown
 kubectl delete namespace boutique headlamp
 ```
+

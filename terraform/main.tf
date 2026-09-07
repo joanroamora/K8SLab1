@@ -1,5 +1,5 @@
 # ==============================================================================
-# Habilitación de APIs necesarias de GCP
+# GCP Required APIs Enablement
 # ==============================================================================
 resource "google_project_service" "container" {
   project            = var.project_id
@@ -8,13 +8,13 @@ resource "google_project_service" "container" {
 }
 
 # ==============================================================================
-# Infraestructura de Red (VPC y Subred dedicada)
+# Network Infrastructure (Dedicated VPC and Subnet)
 # ==============================================================================
 resource "google_compute_network" "vpc" {
   name                    = var.network_name
   auto_create_subnetworks = false
   routing_mode            = "REGIONAL"
-  description             = "VPC dedicada y aislada para el clúster de GKE"
+  description             = "Dedicated and isolated VPC for the GKE cluster"
 }
 
 resource "google_compute_subnetwork" "subnet" {
@@ -24,13 +24,13 @@ resource "google_compute_subnetwork" "subnet" {
   network                  = google_compute_network.vpc.id
   private_ip_google_access = true
 
-  # Rango secundario para las IPs de los Pods (VPC-Native)
+  # Secondary IP range for Pods (VPC-Native)
   secondary_ip_range {
     range_name    = "pods"
     ip_cidr_range = "10.20.0.0/16"
   }
 
-  # Rango secundario para las IPs de los Services (ClusterIPs)
+  # Secondary IP range for Services (ClusterIPs)
   secondary_ip_range {
     range_name    = "services"
     ip_cidr_range = "10.30.0.0/20"
@@ -38,7 +38,7 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 # ==============================================================================
-# Cloud Router y Cloud NAT para salida segura a Internet (Docker Hub, APIs, etc.)
+# Cloud Router & Cloud NAT for Secure Egress (Docker Hub, APIs, etc.)
 # ==============================================================================
 resource "google_compute_router" "router" {
   name    = "${var.network_name}-router"
@@ -55,13 +55,13 @@ resource "google_compute_router_nat" "nat" {
 }
 
 # ==============================================================================
-# Clúster de Google Kubernetes Engine (GKE) - Modo Autopilot
+# Google Kubernetes Engine (GKE) Cluster - Autopilot Mode
 # ==============================================================================
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
   location = var.region
 
-  # Habilita el modo Autopilot: aprovisionamiento, escalado y seguridad totalmente gestionados
+  # Enable Autopilot mode: fully managed provisioning, scaling, and security
   enable_autopilot = true
 
   network    = google_compute_network.vpc.self_link
@@ -72,10 +72,10 @@ resource "google_container_cluster" "primary" {
     services_secondary_range_name = "services"
   }
 
-  # CRÍTICO: Permite que 'terraform destroy' elimine el clúster sin bloqueos de protección
+  # CRITICAL: Allows 'terraform destroy' to cleanly remove the cluster without deletion protection locks
   deletion_protection = false
 
-  # Endpoint público para administración vía kubectl y nodos privados para máxima seguridad
+  # Public endpoint for kubectl administration and private nodes for maximum security
   private_cluster_config {
     enable_private_endpoint = false
     enable_private_nodes    = true

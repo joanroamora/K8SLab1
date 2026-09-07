@@ -1,29 +1,29 @@
 variable "project_id" {
-  description = "El ID del proyecto de Google Cloud Platform (GCP)"
+  description = "The Google Cloud Platform (GCP) project ID"
   type        = string
   default     = "bitcitychamp-project"
 }
 
 variable "region" {
-  description = "La región estándar de GCP donde se aprovisionarán todos los recursos"
+  description = "The standard GCP region where all resources will be provisioned"
   type        = string
   default     = "us-central1"
 }
 
 variable "cluster_name" {
-  description = "Nombre del clúster de Google Kubernetes Engine (GKE)"
+  description = "Name of the Google Kubernetes Engine (GKE) cluster"
   type        = string
   default     = "gke-autopilot-lab"
 }
 
 variable "network_name" {
-  description = "Nombre de la Virtual Private Cloud (VPC) dedicada"
+  description = "Name of the dedicated Virtual Private Cloud (VPC)"
   type        = string
   default     = "gke-vpc"
 }
 
 variable "subnet_name" {
-  description = "Nombre de la subred principal dentro de la VPC"
+  description = "Name of the primary subnetwork within the VPC"
   type        = string
   default     = "gke-subnet"
 }
