@@ -28,29 +28,49 @@ data:
     </footer>
 
     <!-- ======================================================================= -->
-    <!-- Google Cloud Vertex AI Agent Builder & Dialogflow CX Web Messenger      -->
+    <!-- Vertex AI Agent Builder & Dialogflow CX Messenger (Singleton Loader)    -->
+    <!-- Prevents duplicate customElement definitions across mobile/desktop DOM  -->
     <!-- ======================================================================= -->
-    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
-    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
-
-    <df-messenger
-      location="global"
-      project-id="bitcitychamp-project"
-      agent-id="7f6c3a7a-8257-42b0-8161-97b07f9f06dd"
-      language-code="en"
-      max-query-length="-1">
-      <df-messenger-chat
-        chat-title="Online Boutique AI Assistant"
-        bot-writing-image="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/smart_toy/default/48px.svg"
-        placeholder-text="Ask about products, prices, shipping...">
-      </df-messenger-chat>
-    </df-messenger>
-
     <script>
-      // Diagnostic event listener for conversational agent debugging
-      window.addEventListener('df-messenger-error', function (event) {
-        console.warn('Dialogflow Messenger Event Detail:', event.detail);
-      });
+      (function() {
+        if (window.__DF_MESSENGER_INITIALIZED__) {
+          return;
+        }
+        window.__DF_MESSENGER_INITIALIZED__ = true;
+
+        // 1. Inject Stylesheet (once)
+        var dfLink = document.createElement('link');
+        dfLink.rel = 'stylesheet';
+        dfLink.href = 'https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css';
+        document.head.appendChild(dfLink);
+
+        // 2. Inject Dialogflow Script (once)
+        var dfScript = document.createElement('script');
+        dfScript.src = 'https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js';
+        dfScript.async = true;
+        document.head.appendChild(dfScript);
+
+        // 3. Inject df-messenger Custom Element directly to body (once)
+        var dfElem = document.createElement('df-messenger');
+        dfElem.setAttribute('location', 'global');
+        dfElem.setAttribute('project-id', 'bitcitychamp-project');
+        dfElem.setAttribute('agent-id', '7f6c3a7a-8257-42b0-8161-97b07f9f06dd');
+        dfElem.setAttribute('language-code', 'en');
+        dfElem.setAttribute('max-query-length', '-1');
+
+        var dfBubble = document.createElement('df-messenger-chat-bubble');
+        dfBubble.setAttribute('chat-title', 'Online Boutique AI Assistant');
+        dfElem.appendChild(dfBubble);
+
+        document.body.appendChild(dfElem);
+
+        // 4. Diagnostic Event Listener
+        window.addEventListener('df-messenger-error', function (event) {
+          var err = event.detail && event.detail.error ? event.detail.error : event.detail;
+          console.error('=== DIALOGFLOW ERROR DETAIL ===');
+          console.error(JSON.stringify(err, null, 2));
+        });
+      })();
     </script>
 
     <style>
