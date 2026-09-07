@@ -34,8 +34,9 @@ data:
     <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
 
     <df-messenger
+      location="global"
       project-id="bitcitychamp-project"
-      agent-id="boutique-shopping-assistant"
+      agent-id="7f6c3a7a-8257-42b0-8161-97b07f9f06dd"
       language-code="en"
       max-query-length="-1">
       <df-messenger-chat
@@ -44,6 +45,13 @@ data:
         placeholder-text="Ask about products, prices, shipping...">
       </df-messenger-chat>
     </df-messenger>
+
+    <script>
+      // Diagnostic event listener for conversational agent debugging
+      window.addEventListener('df-messenger-error', function (event) {
+        console.warn('Dialogflow Messenger Event Detail:', event.detail);
+      });
+    </script>
 
     <style>
       df-messenger {

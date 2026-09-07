@@ -76,7 +76,7 @@ spec:
         - name: DIALOGFLOW_PROJECT_ID
           value: 'bitcitychamp-project'
         - name: DIALOGFLOW_AGENT_ID
-          value: 'boutique-shopping-assistant'
+          value: '7f6c3a7a-8257-42b0-8161-97b07f9f06dd'
         - name: DIALOGFLOW_LOCATION
           value: 'global'
         volumeMounts:
