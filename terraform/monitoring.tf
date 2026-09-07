@@ -14,20 +14,12 @@ resource "terraform_data" "k8s_workloads" {
   ]
 
   provisioner "local-exec" {
-    command = <<-EOT
-      echo "==> Configuring kubectl credentials for ${google_container_cluster.primary.name}..."
-      gcloud container clusters get-credentials ${google_container_cluster.primary.name} --region ${var.region} --project ${var.project_id}
-      echo "==> Deploying Unified Kubernetes Manifests (Boutique, Headlamp, and Observability)..."
-      kubectl apply -k ${path.module}/../kubernetes/manifests
-    EOT
+    command = "echo 'Layer 2 workloads managed via dedicated Kubernetes CD workflow'"
   }
 
   provisioner "local-exec" {
     when    = destroy
-    command = <<-EOT
-      echo "==> Cleaning up Kubernetes workloads before cluster teardown..."
-      kubectl delete -k ${path.module}/../kubernetes/manifests --ignore-not-found=true || true
-    EOT
+    command = "echo 'Layer 2 workload cleanup handled prior to cluster teardown'"
   }
 
   depends_on = [
