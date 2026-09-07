@@ -192,18 +192,13 @@ kubectl port-forward -n headlamp svc/headlamp 8080:80
 ```
 
 ### 2. Obtener el Token de Autenticación RBAC
-En otra terminal, extrae el token generado para el `ServiceAccount`:
+En **GKE Autopilot** (Kubernetes con OIDC de Google Cloud activado), el API Server valida la firma OIDC y la audiencia (`aud`) del clúster. Por ello, genera el token dinámico con:
 
 ```bash
-# Método A: Extrayendo el token del Secret persistente
-kubectl get secret -n headlamp headlamp-admin-token -o jsonpath='{.data.token}' | base64 -d && echo ""
+kubectl create token headlamp-admin -n headlamp --duration=48h
 ```
 
-*(Alternativa compatible con Kubernetes 1.24+):*
-```bash
-# Método B: Generando un token temporal de 24 horas
-kubectl create token headlamp-admin -n headlamp --duration=24h
-```
+*(Copia la cadena generada y pégala en el campo Token del panel).*
 
 ### 3. Iniciar Sesión en Headlamp
 1. Entra en tu navegador a: **[http://localhost:8080](http://localhost:8080)**
