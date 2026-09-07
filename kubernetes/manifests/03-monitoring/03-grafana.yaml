@@ -21,6 +21,7 @@ data:
     datasources:
       - name: Prometheus
         type: prometheus
+        uid: prometheus
         access: proxy
         url: http://prometheus.monitoring.svc.cluster.local:9090
         isDefault: true
@@ -71,7 +72,7 @@ data:
           "id": 1,
           "title": "Online Boutique Pods",
           "type": "stat",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "count(kube_pod_status_phase{namespace=\"boutique\", phase=\"Running\"} == 1) or count(count by (pod) (container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}))",
@@ -90,7 +91,7 @@ data:
           "id": 2,
           "title": "Total Restarts (Boutique)",
           "type": "stat",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"boutique\"}) or vector(0)",
@@ -109,7 +110,7 @@ data:
           "id": 3,
           "title": "Total CPU Rate (Cores)",
           "type": "stat",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m]))",
@@ -131,7 +132,7 @@ data:
           "id": 4,
           "title": "Total Memory (MB)",
           "type": "stat",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"}) / (1024 * 1024)",
@@ -153,7 +154,7 @@ data:
           "id": 5,
           "title": "CPU Usage per Microservice (Cores)",
           "type": "timeseries",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])) by (pod)",
@@ -173,7 +174,7 @@ data:
           "id": 6,
           "title": "Memory Working Set per Microservice",
           "type": "timeseries",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"}) by (pod)",
@@ -193,7 +194,7 @@ data:
           "id": 7,
           "title": "Network Ingress (Received Bytes/sec)",
           "type": "timeseries",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(rate(container_network_receive_bytes_total{namespace=\"boutique\"}[2m])) by (pod)",
@@ -213,7 +214,7 @@ data:
           "id": 8,
           "title": "Network Egress (Transmitted Bytes/sec)",
           "type": "timeseries",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum(rate(container_network_transmit_bytes_total{namespace=\"boutique\"}[2m])) by (pod)",
@@ -233,7 +234,7 @@ data:
           "id": 9,
           "title": "Microservices Detailed Breakdown",
           "type": "table",
-          "datasource": { "type": "prometheus", "uid": "Prometheus" },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m]))",
@@ -271,6 +272,8 @@ metadata:
     app.kubernetes.io/part-of: observability
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: grafana
