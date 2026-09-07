@@ -8,3 +8,11 @@ resources:
   - 03-monitoring/01-prometheus.yaml
   - 03-monitoring/02-kube-state-metrics.yaml
   - 03-monitoring/03-grafana.yaml
+  - 04-chatbot/01-chatbot-configmap.yaml
+
+patches:
+  - path: 04-chatbot/02-frontend-chatbot-patch.yaml
+    target:
+      kind: Deployment
+      name: frontend
+      namespace: boutique

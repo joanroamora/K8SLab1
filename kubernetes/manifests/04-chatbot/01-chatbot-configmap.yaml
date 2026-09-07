@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-chat-widget
+  namespace: boutique
+  labels:
+    app: frontend
+    app.kubernetes.io/part-of: online-boutique
+    app.kubernetes.io/component: conversational-ai
+data:
+  footer.html: |
+    {{ define "footer" }}
+
+    <footer class="py-5">
+        <div class="footer-top">
+            <div class="container footer-social">
+                <p class="footer-text">This website is hosted for demo purposes only. It is not an actual shop. This is not a Google product.</p>
+                <p class="footer-text">&copy; 2020-{{ .currentYear }} Google LLC (<a href="https://github.com/GoogleCloudPlatform/microservices-demo" target="_blank" rel="noopener">Source Code</a>)</p>
+                <p class="footer-text">
+                    <small>
+                        {{ with $.session_id }}
+                        Session ID: {{ . }}
+                        {{ end }}
+                    </small>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================= -->
+    <!-- Google Cloud Vertex AI Agent Builder & Dialogflow CX Web Messenger      -->
+    <!-- ======================================================================= -->
+    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+
+    <df-messenger
+      project-id="bitcitychamp-project"
+      agent-id="boutique-shopping-assistant"
+      language-code="en"
+      max-query-length="-1">
+      <df-messenger-chat
+        chat-title="Online Boutique AI Assistant"
+        bot-writing-image="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/smart_toy/default/48px.svg"
+        placeholder-text="Ask about products, prices, shipping...">
+      </df-messenger-chat>
+    </df-messenger>
+
+    <style>
+      df-messenger {
+        z-index: 99999;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        --df-messenger-button-titlebar-color: #1a73e8;
+        --df-messenger-chat-background: #ffffff;
+        --df-messenger-font-color: #202124;
+        --df-messenger-send-icon: #1a73e8;
+        --df-messenger-user-message: #e8f0fe;
+        --df-messenger-bot-message: #f1f3f4;
+        --df-messenger-titlebar-title-align: left;
+        --df-messenger-chat-border-radius: 12px;
+      }
+      @media (max-width: 600px) {
+        df-messenger {
+          bottom: 12px;
+          right: 12px;
+        }
+      }
+    </style>
+
+    {{ end }}

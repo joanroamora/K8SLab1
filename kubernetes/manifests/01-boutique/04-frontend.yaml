@@ -69,8 +69,21 @@ spec:
           value: adservice:9555
         - name: SHOPPING_ASSISTANT_SERVICE_ADDR
           value: shoppingassistantservice:80
-        - name: ENABLE_PROFILER
-          value: '0'
+        - name: CHATBOT_ENABLED
+          value: 'true'
+        - name: CHATBOT_PROVIDER
+          value: 'vertex-ai-agent-builder'
+        - name: DIALOGFLOW_PROJECT_ID
+          value: 'bitcitychamp-project'
+        - name: DIALOGFLOW_AGENT_ID
+          value: 'boutique-shopping-assistant'
+        - name: DIALOGFLOW_LOCATION
+          value: 'global'
+        volumeMounts:
+        - name: chat-widget-footer
+          mountPath: /src/templates/footer.html
+          subPath: footer.html
+          readOnly: true
         resources:
           requests:
             cpu: 100m
@@ -78,6 +91,10 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
+      volumes:
+      - name: chat-widget-footer
+        configMap:
+          name: frontend-chat-widget
 ---
 apiVersion: v1
 kind: Service

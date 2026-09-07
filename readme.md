@@ -78,6 +78,7 @@ graph TD
 │       └── kubernetes-cd.yml   # [CD] Automated deployment to GKE & workload rollout checks
 ├── .yamllint.yml               # Strict linter configuration for Kubernetes manifests
 ├── terraform/                  # [Layer 1] Infrastructure as Code
+│   ├── chatbot.tf              # Vertex AI Agent Builder & Dialogflow CX Agent
 │   ├── main.tf                 # VPC, Subnet, Cloud Router, NAT, and GKE Autopilot Cluster
 │   ├── monitoring.tf           # Workload integration hook & state stubs
 │   ├── outputs.tf              # Endpoints, connection strings, and network attributes
@@ -90,6 +91,7 @@ graph TD
         ├── 01-boutique/        # Google Online Boutique 12 microservices suite
         ├── 02-dashboard/       # Headlamp UI Dashboard deployment & RBAC
         ├── 03-monitoring/      # Prometheus, kube-state-metrics & Grafana SRE Dashboard
+        ├── 04-chatbot/         # Vertex AI & Dialogflow CX Web Messenger integration
         ├── kustomization.yaml  # Unified atomic deployment manifest
         └── README.md           # In-depth architectural guide and operational labs
 ```
