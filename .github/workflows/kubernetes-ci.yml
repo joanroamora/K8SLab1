@@ -1,0 +1,44 @@
+name: "Kubernetes CI"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'kubernetes/**'
+      - '.github/workflows/kubernetes-ci.yml'
+      - '.yamllint.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: "Lint & Validate Build"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yamllint
+
+      - name: Run yamllint on Manifests
+        run: |
+          echo "==> Linting Kubernetes YAML manifests..."
+          yamllint -c .yamllint.yml kubernetes/manifests/
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v3
+        with:
+          kustomize-version: "v5.3.0"
+
+      - name: Validate Kustomize Build
+        run: |
+          echo "==> Building and validating Kustomize overlays & resources..."
+          kustomize build kubernetes/manifests/ > /dev/null
+          echo "✅ Kustomize build succeeded with valid schemas!"

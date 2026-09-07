@@ -10,8 +10,10 @@ This repository provides a complete two-layer architecture to deploy, manage, an
 .
 ├── .github/
 │   └── workflows/
-│       ├── terraform.yml     # [CI/CD] Terraform fmt, init, validate, PR plan & CD apply on main
-│       └── kubernetes.yml    # [CI/CD] yamllint, kustomize build & CD deploy to GKE on main
+│       ├── terraform-ci.yml  # [CI] Terraform fmt, init, validate, and PR plan comments
+│       ├── terraform-cd.yml  # [CD] Automated terraform apply on push/merge to main
+│       ├── kubernetes-ci.yml # [CI] yamllint and kustomize build validation on PR
+│       └── kubernetes-cd.yml # [CD] Automated deployment to GKE via Kustomize on main
 ├── .yamllint.yml             # Linting standards for Kubernetes manifests
 ├── terraform/                # [Layer 1] Base Infrastructure as Code (IaC)
 │   ├── main.tf               # VPC, Subnets, Cloud Router, Cloud NAT, and GKE Autopilot Cluster
@@ -80,24 +82,32 @@ kubectl port-forward -n monitoring svc/prometheus 9090:9090
 
 ## 🔄 9. Enterprise CI/CD Automation (GitHub Actions)
 
-This repository includes two decoupled, production-grade GitHub Actions workflows following industry standards:
+This repository provides **4 decoupled, dedicated workflows** separating CI and CD for both infrastructure and applications:
 
-### 1. Infrastructure Pipeline (`.github/workflows/terraform.yml`)
-* **Continuous Integration (Pull Requests to `main`):**
-  - Runs `terraform fmt -check` to enforce code formatting.
-  - Runs `terraform init` and `terraform validate`.
-  - Generates a speculative `terraform plan` and automatically posts a formatted, collapsible summary as a comment directly on the Pull Request.
-* **Continuous Deployment (Push / Merge to `main`):**
-  - Automatically runs `terraform apply -auto-approve` to provision or update GCP resources.
+### 1. Infrastructure CI (`.github/workflows/terraform-ci.yml`)
+* **Trigger:** Pull Requests to `main` modifying `terraform/**`.
+* **Jobs:**
+  - `terraform fmt -check` (Code formatting validation).
+  - `terraform init` & `terraform validate`.
+  - Generates speculative `terraform plan` and automatically posts a collapsible summary comment on the Pull Request.
 
-### 2. Workloads & Observability Pipeline (`.github/workflows/kubernetes.yml`)
-* **Continuous Integration (Pull Requests to `main`):**
-  - Runs `yamllint` using `.yamllint.yml` standards across all Kubernetes manifests.
-  - Validates full compilation and schemas with `kustomize build kubernetes/manifests/`.
-* **Continuous Deployment (Push / Merge to `main`):**
-  - Authenticates to Google Cloud and configures GKE credentials for cluster `gke-autopilot-lab`.
-  - Deploys workloads atomically using `kubectl apply -k kubernetes/manifests/`.
-  - Verifies rollout health across `frontend`, `cartservice`, `grafana`, and `prometheus`.
+### 2. Infrastructure CD (`.github/workflows/terraform-cd.yml`)
+* **Trigger:** Direct push or merged Pull Request to `main` touching `terraform/**`.
+* **Jobs:**
+  - Authenticates to GCP and executes `terraform apply -auto-approve` to provision/update resources.
+
+### 3. Kubernetes CI (`.github/workflows/kubernetes-ci.yml`)
+* **Trigger:** Pull Requests to `main` modifying `kubernetes/**` or `.yamllint.yml`.
+* **Jobs:**
+  - `yamllint -c .yamllint.yml kubernetes/manifests/` (Schema & syntax validation).
+  - `kustomize build kubernetes/manifests/` (Compilation & patch validation).
+
+### 4. Kubernetes CD (`.github/workflows/kubernetes-cd.yml`)
+* **Trigger:** Direct push or merged Pull Request to `main` touching `kubernetes/**`.
+* **Jobs:**
+  - Authenticates to GCP and binds `kubectl` to `gke-autopilot-lab`.
+  - Atomic deployment via `kubectl apply -k kubernetes/manifests/`.
+  - Health checks with `kubectl rollout status` across critical workloads (`frontend`, `cartservice`, `grafana`, `prometheus`).
 
 ### 🔐 Required GitHub Repository Secrets
 
