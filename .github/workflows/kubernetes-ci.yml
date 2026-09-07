@@ -32,10 +32,11 @@ jobs:
           echo "==> Linting Kubernetes YAML manifests..."
           yamllint -c .yamllint.yml kubernetes/manifests/
 
-      - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v3
-        with:
-          kustomize-version: "v5.3.0"
+      - name: Install Kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+          kustomize version
 
       - name: Validate Kustomize Build
         run: |
