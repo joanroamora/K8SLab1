@@ -51,7 +51,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -no-color -out=tfplan
+          terraform plan -no-color -lock-timeout=60s -out=tfplan
           terraform show -no-color tfplan > tfplan.txt
         continue-on-error: false
 

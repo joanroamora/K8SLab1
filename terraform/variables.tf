@@ -31,5 +31,5 @@ variable "subnet_name" {
 variable "enable_monitoring_automation" {
   description = "Enable automatic deployment of Kubernetes workloads and monitoring manifests upon cluster creation"
   type        = bool
-  default     = true
+  default     = false
 }
