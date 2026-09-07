@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: boutique
+  labels:
+    name: boutique
+    app.kubernetes.io/part-of: online-boutique
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: headlamp
+  labels:
+    name: headlamp
+    app.kubernetes.io/part-of: control-plane
