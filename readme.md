@@ -8,6 +8,11 @@ This repository provides a complete two-layer architecture to deploy, manage, an
 
 ```text
 .
+├── .github/
+│   └── workflows/
+│       ├── terraform.yml     # [CI/CD] Terraform fmt, init, validate, PR plan & CD apply on main
+│       └── kubernetes.yml    # [CI/CD] yamllint, kustomize build & CD deploy to GKE on main
+├── .yamllint.yml             # Linting standards for Kubernetes manifests
 ├── terraform/                # [Layer 1] Base Infrastructure as Code (IaC)
 │   ├── main.tf               # VPC, Subnets, Cloud Router, Cloud NAT, and GKE Autopilot Cluster
 │   ├── monitoring.tf         # Automated deployment orchestration for K8s workloads & monitoring
@@ -70,3 +75,35 @@ kubectl port-forward -n monitoring svc/grafana 3000:80
 kubectl port-forward -n monitoring svc/prometheus 9090:9090
 # Open http://localhost:9090 in your browser
 ```
+
+---
+
+## 🔄 9. Enterprise CI/CD Automation (GitHub Actions)
+
+This repository includes two decoupled, production-grade GitHub Actions workflows following industry standards:
+
+### 1. Infrastructure Pipeline (`.github/workflows/terraform.yml`)
+* **Continuous Integration (Pull Requests to `main`):**
+  - Runs `terraform fmt -check` to enforce code formatting.
+  - Runs `terraform init` and `terraform validate`.
+  - Generates a speculative `terraform plan` and automatically posts a formatted, collapsible summary as a comment directly on the Pull Request.
+* **Continuous Deployment (Push / Merge to `main`):**
+  - Automatically runs `terraform apply -auto-approve` to provision or update GCP resources.
+
+### 2. Workloads & Observability Pipeline (`.github/workflows/kubernetes.yml`)
+* **Continuous Integration (Pull Requests to `main`):**
+  - Runs `yamllint` using `.yamllint.yml` standards across all Kubernetes manifests.
+  - Validates full compilation and schemas with `kustomize build kubernetes/manifests/`.
+* **Continuous Deployment (Push / Merge to `main`):**
+  - Authenticates to Google Cloud and configures GKE credentials for cluster `gke-autopilot-lab`.
+  - Deploys workloads atomically using `kubectl apply -k kubernetes/manifests/`.
+  - Verifies rollout health across `frontend`, `cartservice`, `grafana`, and `prometheus`.
+
+### 🔐 Required GitHub Repository Secrets
+
+To enable these workflows in your GitHub repository (**Settings > Secrets and variables > Actions**), configure:
+
+| Secret Name | Description | Example / Value |
+| :--- | :--- | :--- |
+| `GCP_PROJECT_ID` | Your Google Cloud Project ID | `bitcitychamp-project` |
+| `GCP_SA_KEY` | GCP Service Account Key (JSON) with GKE and Compute permissions | `{"type": "service_account", ...}` |

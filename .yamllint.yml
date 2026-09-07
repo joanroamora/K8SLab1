@@ -1,0 +1,10 @@
+---
+extends: relaxed
+
+rules:
+  line-length: disable
+  truthy: disable
+  octal-values: disable
+  comments: disable
+  document-start: disable
+  empty-lines: disable

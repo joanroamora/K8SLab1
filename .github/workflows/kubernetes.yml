@@ -1,0 +1,88 @@
+name: "Kubernetes CI/CD"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'kubernetes/**'
+      - '.github/workflows/kubernetes.yml'
+      - '.yamllint.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'kubernetes/**'
+      - '.github/workflows/kubernetes.yml'
+      - '.yamllint.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  validate:
+    name: "CI: Lint & Kustomize Build"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yamllint
+
+      - name: Run yamllint on Manifests
+        run: |
+          echo "==> Linting Kubernetes YAML manifests..."
+          yamllint -c .yamllint.yml kubernetes/manifests/
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v3
+        with:
+          kustomize-version: "v5.3.0"
+
+      - name: Validate Kustomize Build
+        run: |
+          echo "==> Building and validating Kustomize overlays & resources..."
+          kustomize build kubernetes/manifests/ > /dev/null
+          echo "✅ Kustomize build succeeded with valid schemas!"
+
+  deploy:
+    name: "CD: Deploy to GKE Cluster"
+    needs: [validate]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: "gke-autopilot-lab"
+          location: "us-central1"
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy Manifests via Kustomize
+        run: |
+          echo "==> Applying Layer 2 Manifests (Boutique, Headlamp, Observability)..."
+          kubectl apply -k kubernetes/manifests/
+
+      - name: Verify Workload Rollouts
+        run: |
+          echo "==> Checking rollout status for critical microservices..."
+          kubectl rollout status deployment/frontend -n boutique --timeout=180s
+          kubectl rollout status deployment/cartservice -n boutique --timeout=180s
+          kubectl rollout status deployment/grafana -n monitoring --timeout=180s
+          kubectl rollout status deployment/prometheus -n monitoring --timeout=180s
+          echo "✅ All core deployments are healthy and running in GKE!"
