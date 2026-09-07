@@ -243,17 +243,42 @@ kubectl port-forward -n monitoring svc/grafana 3000:80
 
 ---
 
-### 2. Production Metrics Architecture (SRE Golden Signals & RED/USE Methods)
+### 2. Production Metrics Architecture (17-Panel SRE Matrix)
 
 The Grafana dashboard incorporates a complete enterprise observability matrix based on **Google SRE 4 Golden Signals**, the **RED Method** (Rate, Errors, Duration), and the **USE Method** (Utilization, Saturation, Errors):
 
-| Metric / Signal | Method / Standard | PromQL Expression | Purpose in Production |
+#### 🏆 Top-Level Service Level Indicators (SLI / SLO KPI Row)
+| Metric / Panel | Standard | PromQL Expression | Purpose & Alert Threshold |
 | :--- | :--- | :--- | :--- |
-| **1. Global Request Rate (Throughput)** | **RED:** Rate<br>**SRE:** Traffic | `sum(rate(http_requests_total[2m]))` | Measures instantaneous request demand in requests per second (RPS). Essential for detecting traffic spikes or anomalous drops in load. |
-| **2. HTTP Error Rate by Status Code** | **RED:** Errors<br>**SRE:** Errors | `sum by (code) (rate(http_requests_total{code=~"[45].."}[2m]))` | Disaggregates errors by exact HTTP status code. Differentiates client errors (`4xx`: bad requests, auth) from critical backend outages (`5xx`: timeouts, crashes). |
-| **3. Resource Saturation (Memory & CPU)** | **USE:** Saturation<br>**SRE:** Saturation | `100 * (container_memory / kube_pod_container_resource_limits)`<br>`100 * (cfs_throttled_periods / cfs_periods)` | Quantifies resource pressure before outages occur. At 100% memory, the kernel triggers **OOM-Killer**. When CPU quota is exhausted, **CFS throttling** inflates tail latency. |
-| **4. Latency: Mean vs Percentiles (p50, p95, p99)** | **RED:** Duration<br>**SRE:** Latency | **Mean:** `rate(duration_sum) / rate(duration_count)`<br>**p50/p95/p99:** `histogram_quantile(0.95, ...)` | **SRE Standard:** The arithmetic mean alone hides spikes ("flaw of averages"). P95 and P99 percentiles expose tail latency experienced by the worst 5% and 1% of users. |
-| **5. Service Availability (SLI / SLO %)** | **SRE Reliability:**<br>Three Nines (99.9%) | `clamp_max((1 - (rate(5xx_requests) / rate(total_requests))) * 100, 100)` | Service Level Indicator (SLI) evaluating compliance with the reliability target (SLO $\ge 99.9\%$) and error budget consumption. |
+| **1. Service Availability %** | **SRE Reliability** | `clamp_max((1 - (rate(5xx_requests) / rate(total_requests))) * 100, 100)` | Primary SLI against the 99.9% Three Nines SLO. Warning alert at `<99.9%`. |
+| **2. Active Microservice Pods** | **K8s State** | `sum(kube_pod_status_phase{namespace="boutique", phase="Running"})` | Confirms all 12 microservices are in operational state. |
+| **3. Global Traffic Rate** | **RED: Rate** | `sum(rate(http_requests_total[2m]))` | Real-time aggregate storefront traffic demand in requests per second. |
+
+#### 🚦 RED Method: In-Flight Request Telemetry
+| Metric / Panel | Standard | PromQL Expression | Purpose & Alert Threshold |
+| :--- | :--- | :--- | :--- |
+| **4. Request Throughput** | **RED: Rate** | `sum(rate(http_requests_total[2m]))` | Real-time traffic rate over a rolling 2-minute window. |
+| **5. Requests by HTTP Code** | **RED: Rate / Error** | `sum by (code)(rate(http_requests_total[2m]))` | Segregates successful 2xx/3xx codes from errors. |
+| **6. Error Rate (4xx vs 5xx)**| **RED: Errors** | `sum by (code)(rate(http_requests_total{code=~"[45].."}[2m]))` | Differentiates client bad requests (`4xx`) from fatal server panics (`5xx`). |
+| **7. Latency (Mean vs p50/p95/p99)** | **RED: Duration** | `histogram_quantile(0.95, sum by (le)(rate(duration_bucket[2m])))` | Exposes tail latency experienced by the worst 5% and 1% of storefront visitors. |
+
+#### ⚙️ USE Method: Resource Utilization, Saturation & Errors
+| Metric / Panel | Standard | PromQL Expression | Purpose & Alert Threshold |
+| :--- | :--- | :--- | :--- |
+| **8. CPU Usage (Cores)** | **USE: Utilization**| `sum by (pod)(rate(container_cpu_usage_seconds_total{namespace="boutique"}[2m]))` | Real-time core consumption per microservice. |
+| **9. CPU CFS Throttling %** | **USE: Saturation** | `100 * (sum by (pod)(rate(cfs_throttled_periods[2m])) / sum by (pod)(rate(cfs_periods[2m])))` | Detects thread starvation caused by CPU quota limits. Alert at `>25%`. |
+| **10. Memory Working Set** | **USE: Utilization**| `sum by (pod)(container_memory_working_set_bytes{namespace="boutique"})` | Active physical RAM consumed (excludes reclaimable cache). |
+| **11. Memory Saturation %** | **USE: Saturation** | `100 * (container_memory / resource_limits)` | Alert trigger at `>80%`; critical prevention of OOM-Killed terminations. |
+| **12. Pod Restarts Count** | **USE: Errors** | `sum by (pod)(changes(kube_pod_container_status_restarts_total[30m]))` | Immediate signal of crashing containers or memory faults. |
+| **13. Network RX (Bytes/s)** | **USE: Utilization**| `sum by (pod)(rate(container_network_receive_bytes_total[2m]))` | Ingress network throughput across service boundaries. |
+| **14. Network TX (Bytes/s)** | **USE: Utilization**| `sum by (pod)(rate(container_network_transmit_bytes_total[2m]))` | Egress network throughput and payload streaming rates. |
+
+#### ☸️ Platform Reliability & Infrastructure Status
+| Metric / Panel | Standard | PromQL Expression | Purpose & Alert Threshold |
+| :--- | :--- | :--- | :--- |
+| **15. Pod Phase Distribution**| **K8s Health** | `sum by (phase)(kube_pod_status_phase{namespace="boutique"})` | Identifies pods in Pending, Running, or Failed states. |
+| **16. Workload Replica Health**| **K8s Desired State**| `kube_deployment_status_replicas_available / kube_deployment_spec_replicas` | Verifies deployments match desired replica counts. |
+| **17. Cache I/O Rate (Redis)**| **Data Layer** | `rate(container_network_receive_bytes_total{pod=~".*redis-cart.*"}[2m])` | Evaluates cache read/write intensity for user carts. |
 
 ---
 
