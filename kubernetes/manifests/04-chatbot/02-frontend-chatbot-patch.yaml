@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: boutique
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        env:
+        - name: CHATBOT_ENABLED
+          value: "true"
+        - name: CHATBOT_PROVIDER
+          value: "vertex-ai-agent-builder"
+        - name: DIALOGFLOW_PROJECT_ID
+          value: "bitcitychamp-project"
+        - name: DIALOGFLOW_AGENT_ID
+          value: "boutique-shopping-assistant"
+        - name: DIALOGFLOW_LOCATION
+          value: "global"
+        volumeMounts:
+        - name: chat-widget-footer
+          mountPath: /src/templates/footer.html
+          subPath: footer.html
+          readOnly: true
+      volumes:
+      - name: chat-widget-footer
+        configMap:
+          name: frontend-chat-widget
