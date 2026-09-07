@@ -44,15 +44,12 @@ jobs:
         run: terraform validate -no-color
 
       - name: Authenticate to Google Cloud
-        id: auth
-        if: ${{ secrets.GCP_SA_KEY != '' }}
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Terraform Plan
         id: plan
-        if: ${{ secrets.GCP_SA_KEY != '' }}
         run: |
           terraform plan -no-color -out=tfplan
           terraform show -no-color tfplan > tfplan.txt
@@ -60,7 +57,7 @@ jobs:
 
       - name: Publish Terraform Plan to Pull Request
         uses: actions/github-script@v7
-        if: github.event_name == 'pull_request' && secrets.GCP_SA_KEY != ''
+        if: github.event_name == 'pull_request'
         env:
           FMT_OUTCOME: ${{ steps.fmt.outcome }}
           INIT_OUTCOME: ${{ steps.init.outcome }}
@@ -102,7 +99,6 @@ jobs:
             });
 
       - name: Publish Plan to Job Summary
-        if: ${{ secrets.GCP_SA_KEY != '' }}
         run: |
           echo "## 🏗️ Terraform Plan Output" >> $GITHUB_STEP_SUMMARY
           echo '```hcl' >> $GITHUB_STEP_SUMMARY
