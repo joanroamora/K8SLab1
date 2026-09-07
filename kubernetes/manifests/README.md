@@ -249,11 +249,11 @@ The Grafana dashboard incorporates a complete enterprise observability matrix ba
 
 | Metric / Signal | Method / Standard | PromQL Expression | Purpose in Production |
 | :--- | :--- | :--- | :--- |
-| **1. Tasa Global de Peticiones (Throughput)** | **RED:** Rate<br>**SRE:** Traffic | `sum(rate(http_requests_total[2m]))` | Mide la demanda instantánea en peticiones por segundo (RPS). Crucial para detectar picos repentinos de tráfico o caídas anómalas de carga. |
-| **2. Tasa de Errores por Código HTTP** | **RED:** Errors<br>**SRE:** Errors | `sum by (code) (rate(http_requests_total{code=~"[45].."}[2m]))` | Desglosa fallos por código HTTP exacto. Permite diferenciar errores de cliente (`4xx`: bad requests, auth) de caídas críticas del backend (`5xx`: timeouts, panics). |
-| **3. Saturación de Recursos (Memoria & CPU)** | **USE:** Saturation<br>**SRE:** Saturation | `100 * (container_memory / kube_pod_container_resource_limits)`<br>`100 * (cfs_throttled_periods / cfs_periods)` | Identifica sobrecarga antes de que ocurra una caída. Si la memoria llega al 100%, el kernel dispara el **OOM-Killer**. Si la CPU se satura, el scheduler **CFS aplica throttling**, disparando la latencia. |
-| **4. Latencia Media vs Percentiles (p50, p95, p99)** | **RED:** Duration<br>**SRE:** Latency | **Mean:** `rate(duration_sum) / rate(duration_count)`<br>**p50/p95/p99:** `histogram_quantile(0.95, ...)` | **Estándar SRE:** La media aritmética sola oculta picos ("falacia del promedio"). Los percentiles p95 y p99 exponen la experiencia del 5% y 1% peor (cola de degradación y SLAs). |
-| **5. Disponibilidad del Servicio (SLI / SLO %)** | **SRE Reliability:**<br>Three Nines (99.9%) | `clamp_max((1 - (rate(5xx_requests) / rate(total_requests))) * 100, 100)` | Indicador de Nivel de Servicio (SLI). Evalúa el cumplimiento del Acuerdo de Nivel de Servicio (SLO $\ge 99.9\%$) y el consumo del presupuesto de error (Error Budget). |
+| **1. Global Request Rate (Throughput)** | **RED:** Rate<br>**SRE:** Traffic | `sum(rate(http_requests_total[2m]))` | Measures instantaneous request demand in requests per second (RPS). Essential for detecting traffic spikes or anomalous drops in load. |
+| **2. HTTP Error Rate by Status Code** | **RED:** Errors<br>**SRE:** Errors | `sum by (code) (rate(http_requests_total{code=~"[45].."}[2m]))` | Disaggregates errors by exact HTTP status code. Differentiates client errors (`4xx`: bad requests, auth) from critical backend outages (`5xx`: timeouts, crashes). |
+| **3. Resource Saturation (Memory & CPU)** | **USE:** Saturation<br>**SRE:** Saturation | `100 * (container_memory / kube_pod_container_resource_limits)`<br>`100 * (cfs_throttled_periods / cfs_periods)` | Quantifies resource pressure before outages occur. At 100% memory, the kernel triggers **OOM-Killer**. When CPU quota is exhausted, **CFS throttling** inflates tail latency. |
+| **4. Latency: Mean vs Percentiles (p50, p95, p99)** | **RED:** Duration<br>**SRE:** Latency | **Mean:** `rate(duration_sum) / rate(duration_count)`<br>**p50/p95/p99:** `histogram_quantile(0.95, ...)` | **SRE Standard:** The arithmetic mean alone hides spikes ("flaw of averages"). P95 and P99 percentiles expose tail latency experienced by the worst 5% and 1% of users. |
+| **5. Service Availability (SLI / SLO %)** | **SRE Reliability:**<br>Three Nines (99.9%) | `clamp_max((1 - (rate(5xx_requests) / rate(total_requests))) * 100, 100)` | Service Level Indicator (SLI) evaluating compliance with the reliability target (SLO $\ge 99.9\%$) and error budget consumption. |
 
 ---
 
@@ -287,7 +287,7 @@ The `loadgenerator` microservice uses Locust to simulate concurrent user traffic
    ```bash
    kubectl logs -n boutique -l app=loadgenerator -c main -f
    ```
-2. In Grafana, inspect the **Tasa Global de Peticiones (RPS)** and **Tasa de Peticiones HTTP por Código de Respuesta** panels to observe live incoming traffic.
+2. In Grafana, inspect the **Global Request Rate (Throughput)** and **HTTP Request Rate by Response Code (RPS)** panels to observe live incoming traffic.
 
 ### Lab C: Live Log Inspection & Interactive Container Terminal
 1. In Headlamp, click on the `redis-cart` pod.
@@ -296,7 +296,7 @@ The `loadgenerator` microservice uses Locust to simulate concurrent user traffic
 
 ### Lab D: Microservices Telemetry & Performance Correlation (Grafana)
 1. Open the Grafana dashboard at **[http://localhost:3000](http://localhost:3000)**.
-2. Compare the **CPU Usage per Microservice** chart with the **Memory Working Set** chart:
+2. Compare the **CPU Usage per Microservice (Cores)** chart with the **Memory Working Set per Microservice** chart:
    - Notice how `frontend` and `cartservice` show higher CPU activity due to `loadgenerator` traffic.
    - Notice how `redis-cart` maintains stable in-memory state.
 3. In your terminal, scale the `loadgenerator` replicas to increase or decrease load:
@@ -306,9 +306,9 @@ The `loadgenerator` microservice uses Locust to simulate concurrent user traffic
 4. Observe the immediate spike in network throughput, CPU rate, and latency percentiles (p95, p99) directly in the Grafana graphs.
 
 ### Lab E: Resource Saturation & CPU Throttling Under Pressure (USE Method)
-1. In Grafana, scroll to **Saturación de CPU y Throttling CFS** and **Saturación de Memoria (% del Límite)**.
+1. In Grafana, scroll to **CPU Saturation & CFS Throttling per Microservice** and **Memory Saturation per Microservice (% of Limit)**.
 2. When workloads experience traffic spikes from `loadgenerator`, examine if `frontend` or `cartservice` pods approach the 80% warning threshold or if CFS throttling is triggered.
-3. Correlate CPU Throttling periods with increases in **Latencia HTTP: Percentil p99**, demonstrating why CPU starvation inflates tail response times.
+3. Correlate CPU Throttling periods with increases in **HTTP Request Latency: Mean vs Percentiles**, demonstrating why CPU starvation inflates tail response times.
 
 ---
 

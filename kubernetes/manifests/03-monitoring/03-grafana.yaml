@@ -89,7 +89,7 @@ data:
         {
           "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
           "id": 2,
-          "title": "Tasa Global de Peticiones (RPS)",
+          "title": "Global Request Rate (Throughput)",
           "type": "stat",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
@@ -114,7 +114,7 @@ data:
         {
           "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
           "id": 3,
-          "title": "Disponibilidad SLI (Target 99.9% SLO)",
+          "title": "Availability SLI (Target 99.9% SLO)",
           "type": "stat",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
@@ -148,7 +148,7 @@ data:
         {
           "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
           "id": 4,
-          "title": "Ratio de Errores HTTP (%)",
+          "title": "HTTP Error Rate (%)",
           "type": "stat",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
@@ -180,13 +180,13 @@ data:
         {
           "gridPos": { "h": 4, "w": 4, "x": 16, "y": 0 },
           "id": 5,
-          "title": "Latencia Media (Mean Duration)",
+          "title": "Mean Response Duration (Latency)",
           "type": "stat",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
             {
               "expr": "((sum(rate(http_request_duration_seconds_sum[2m])) or sum(rate(prometheus_http_request_duration_seconds_sum[2m]))) / clamp_min(sum(rate(http_request_duration_seconds_count[2m])) or sum(rate(prometheus_http_request_duration_seconds_count[2m])), 0.001)) or vector(0)",
-              "legendFormat": "Avg Duration",
+              "legendFormat": "Mean Duration",
               "refId": "A"
             }
           ],
@@ -243,10 +243,10 @@ data:
         {
           "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
           "id": 7,
-          "title": "Tasa de Peticiones HTTP por Código de Respuesta (RPS)",
+          "title": "HTTP Request Rate by Response Code (RPS)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Volumen de peticiones por segundo agrupadas por código HTTP (2xx, 3xx, 4xx, 5xx) - RED Method: Rate.",
+          "description": "Request rate per second grouped by HTTP status code (2xx, 3xx, 4xx, 5xx) - RED Method: Rate.",
           "targets": [
             {
               "expr": "sum by (code) (rate(http_requests_total[2m])) or sum by (code) (rate(prometheus_http_requests_total[2m]))",
@@ -264,10 +264,10 @@ data:
         {
           "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
           "id": 8,
-          "title": "Tasa de Errores por Código de Fallo HTTP (4xx & 5xx)",
+          "title": "HTTP Error Rate by Status Code (4xx & 5xx)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Tasa de fallos clasificada por código específico (400, 401, 403, 404, 500, 502, 503) - RED Method: Errors.",
+          "description": "Failure rate broken down by specific HTTP status code (400, 401, 403, 404, 500, 502, 503) - RED Method: Errors.",
           "targets": [
             {
               "expr": "sum by (code) (rate(http_requests_total{code=~\"[45]..\"}[2m])) or sum by (code) (rate(prometheus_http_requests_total{code=~\"[45]..\"}[2m]))",
@@ -285,19 +285,19 @@ data:
         {
           "gridPos": { "h": 8, "w": 14, "x": 0, "y": 12 },
           "id": 9,
-          "title": "Latencia HTTP: Tiempo Medio vs Percentiles (p50 Mediana, p95 SLA, p99 Tail)",
+          "title": "HTTP Request Latency: Mean vs Percentiles (p50, p95, p99 Tail)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Comparativa entre la latencia promedio y los percentiles de distribución de tiempo de respuesta (RED Method: Duration).",
+          "description": "Comparison between average response duration and latency distribution percentiles - RED Method: Duration.",
           "targets": [
             {
               "expr": "((sum(rate(http_request_duration_seconds_sum[2m])) or sum(rate(prometheus_http_request_duration_seconds_sum[2m]))) / clamp_min(sum(rate(http_request_duration_seconds_count[2m])) or sum(rate(prometheus_http_request_duration_seconds_count[2m])), 0.001))",
-              "legendFormat": "Media Aritmética (Mean)",
+              "legendFormat": "Arithmetic Mean",
               "refId": "A"
             },
             {
               "expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket[2m]))) or histogram_quantile(0.50, sum by (le) (rate(prometheus_http_request_duration_seconds_bucket[2m])))",
-              "legendFormat": "p50 (Mediana)",
+              "legendFormat": "p50 (Median)",
               "refId": "B"
             },
             {
@@ -321,14 +321,14 @@ data:
         {
           "gridPos": { "h": 8, "w": 10, "x": 14, "y": 12 },
           "id": 10,
-          "title": "Disponibilidad del Servicio SLI vs Objetivo SLO (99.9%)",
+          "title": "Service Availability SLI vs SLO Target (99.9%)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Evolución temporal del SLI de disponibilidad frente a los umbrales de objetivo de confiabilidad.",
+          "description": "Availability SLI tracking over time evaluated against the 99.9% reliability objective (SLO).",
           "targets": [
             {
               "expr": "clamp_max((1 - ((sum(rate(http_requests_total{code=~\"5..\"}[5m])) or sum(rate(prometheus_http_requests_total{code=~\"5..\"}[5m])) or vector(0)) / clamp_min(sum(rate(http_requests_total[5m])) or sum(rate(prometheus_http_requests_total[5m])) or vector(1), 0.001))) * 100, 100)",
-              "legendFormat": "Disponibilidad SLI (%)",
+              "legendFormat": "Availability SLI (%)",
               "refId": "A"
             }
           ],
@@ -350,10 +350,10 @@ data:
         {
           "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
           "id": 11,
-          "title": "Saturación de Memoria por Microservicio (% del Límite)",
+          "title": "Memory Saturation per Microservice (% of Limit)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Saturación de memoria según USE Method. Alerta amarilla al 80%, crítica al 95% (riesgo de OOMKilled).",
+          "description": "Memory saturation under USE Method. Warning threshold at 80%, critical alert at 95% (OOM-Kill risk).",
           "targets": [
             {
               "expr": "100 * (sum by (pod) (container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"}) / clamp_min(sum by (pod) (kube_pod_container_resource_limits{namespace=\"boutique\", resource=\"memory\"}), 1))",
@@ -379,19 +379,19 @@ data:
         {
           "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
           "id": 12,
-          "title": "Saturación de CPU y Throttling CFS por Microservicio",
+          "title": "CPU Saturation & CFS Throttling per Microservice",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Saturación de CPU según USE Method: mide % de periodos estrangulados (CFS Throttling) y % respecto al límite.",
+          "description": "CPU saturation under USE Method: CFS throttled periods % and % consumed of CPU resource limit.",
           "targets": [
             {
               "expr": "100 * (sum by (pod) (rate(container_cpu_cfs_throttled_periods_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])) / clamp_min(sum by (pod) (rate(container_cpu_cfs_periods_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])), 0.001))",
-              "legendFormat": "{{pod}} [CFS Throttled %]",
+              "legendFormat": "{{pod}} [CFS Throttling %]",
               "refId": "A"
             },
             {
               "expr": "100 * (sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])) / clamp_min(sum by (pod) (kube_pod_container_resource_limits{namespace=\"boutique\", resource=\"cpu\"}), 0.001))",
-              "legendFormat": "{{pod}} [Uso % Límite]",
+              "legendFormat": "{{pod}} [CPU % of Limit]",
               "refId": "B"
             }
           ],
@@ -485,7 +485,7 @@ data:
         {
           "gridPos": { "h": 9, "w": 24, "x": 0, "y": 44 },
           "id": 17,
-          "title": "Matriz Detallada de Microservicios: Recursos, Límites y Reinicios",
+          "title": "Microservices Telemetry & Performance Matrix",
           "type": "table",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
