@@ -239,17 +239,35 @@ kubectl port-forward -n monitoring svc/grafana 3000:80
 ```
 - Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 - **Authentication:** Anonymous Admin is enabled by default for frictionless local access. If prompted, login with `admin` / `admin`.
-- **Pre-loaded Dashboard:** Navigate to **Dashboards > Online Boutique - Microservices Telemetry & Performance** to view live metrics for all 12 microservices.
+- **Pre-loaded Dashboard:** Navigate to **Dashboards > Online Boutique - Microservices Telemetry & Performance** to view the production-grade SRE telemetry suite.
 
-### 2. (Optional) Access Prometheus Direct Query UI
+---
+
+### 2. Production Metrics Architecture (SRE Golden Signals & RED/USE Methods)
+
+The Grafana dashboard incorporates a complete enterprise observability matrix based on **Google SRE 4 Golden Signals**, the **RED Method** (Rate, Errors, Duration), and the **USE Method** (Utilization, Saturation, Errors):
+
+| Metric / Signal | Method / Standard | PromQL Expression | Purpose in Production |
+| :--- | :--- | :--- | :--- |
+| **1. Tasa Global de Peticiones (Throughput)** | **RED:** Rate<br>**SRE:** Traffic | `sum(rate(http_requests_total[2m]))` | Mide la demanda instantánea en peticiones por segundo (RPS). Crucial para detectar picos repentinos de tráfico o caídas anómalas de carga. |
+| **2. Tasa de Errores por Código HTTP** | **RED:** Errors<br>**SRE:** Errors | `sum by (code) (rate(http_requests_total{code=~"[45].."}[2m]))` | Desglosa fallos por código HTTP exacto. Permite diferenciar errores de cliente (`4xx`: bad requests, auth) de caídas críticas del backend (`5xx`: timeouts, panics). |
+| **3. Saturación de Recursos (Memoria & CPU)** | **USE:** Saturation<br>**SRE:** Saturation | `100 * (container_memory / kube_pod_container_resource_limits)`<br>`100 * (cfs_throttled_periods / cfs_periods)` | Identifica sobrecarga antes de que ocurra una caída. Si la memoria llega al 100%, el kernel dispara el **OOM-Killer**. Si la CPU se satura, el scheduler **CFS aplica throttling**, disparando la latencia. |
+| **4. Latencia Media vs Percentiles (p50, p95, p99)** | **RED:** Duration<br>**SRE:** Latency | **Mean:** `rate(duration_sum) / rate(duration_count)`<br>**p50/p95/p99:** `histogram_quantile(0.95, ...)` | **Estándar SRE:** La media aritmética sola oculta picos ("falacia del promedio"). Los percentiles p95 y p99 exponen la experiencia del 5% y 1% peor (cola de degradación y SLAs). |
+| **5. Disponibilidad del Servicio (SLI / SLO %)** | **SRE Reliability:**<br>Three Nines (99.9%) | `clamp_max((1 - (rate(5xx_requests) / rate(total_requests))) * 100, 100)` | Indicador de Nivel de Servicio (SLI). Evalúa el cumplimiento del Acuerdo de Nivel de Servicio (SLO $\ge 99.9\%$) y el consumo del presupuesto de error (Error Budget). |
+
+---
+
+### 3. (Optional) Access Prometheus Direct Query UI
 Expose Prometheus locally for ad-hoc PromQL queries:
 ```bash
 kubectl port-forward -n monitoring svc/prometheus 9090:9090
 ```
 - Open **[http://localhost:9090](http://localhost:9090)** in your browser.
 - Test queries:
-  - `sum(rate(container_cpu_usage_seconds_total{namespace="boutique", container!=""}[2m])) by (pod)`
-  - `sum(container_memory_working_set_bytes{namespace="boutique", container!=""}) by (pod)`
+  - `sum(rate(http_requests_total[2m]))`
+  - `sum by (code) (rate(http_requests_total[2m]))`
+  - `100 * (sum by (pod) (container_memory_working_set_bytes{namespace="boutique", container!=""}) / sum by (pod) (kube_pod_container_resource_limits{namespace="boutique", resource="memory"}))`
+  - `histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[2m])))`
 
 ---
 
@@ -263,13 +281,13 @@ kubectl port-forward -n monitoring svc/prometheus 9090:9090
    ```
 3. Watch Headlamp: the **ReplicaSet** instantly reconciles the observed state against the desired state, spinning up a healthy replacement pod in seconds with zero downtime.
 
-### Lab B: Synthetic Traffic Injection & Monitoring
+### Lab B: Synthetic Traffic Injection & Throughput Monitoring
 The `loadgenerator` microservice uses Locust to simulate concurrent user traffic browsing products, managing carts, and checking out.
 1. Stream the live traffic generator logs:
    ```bash
    kubectl logs -n boutique -l app=loadgenerator -c main -f
    ```
-2. In Headlamp and Grafana, observe CPU and memory usage for `frontend` and `cartservice` as they handle requests.
+2. In Grafana, inspect the **Tasa Global de Peticiones (RPS)** and **Tasa de Peticiones HTTP por Código de Respuesta** panels to observe live incoming traffic.
 
 ### Lab C: Live Log Inspection & Interactive Container Terminal
 1. In Headlamp, click on the `redis-cart` pod.
@@ -285,7 +303,12 @@ The `loadgenerator` microservice uses Locust to simulate concurrent user traffic
    ```bash
    kubectl scale deployment/loadgenerator -n boutique --replicas=3
    ```
-4. Observe the immediate spike in network throughput and CPU rate on `frontend` and `cartservice` directly in the Grafana graphs.
+4. Observe the immediate spike in network throughput, CPU rate, and latency percentiles (p95, p99) directly in the Grafana graphs.
+
+### Lab E: Resource Saturation & CPU Throttling Under Pressure (USE Method)
+1. In Grafana, scroll to **Saturación de CPU y Throttling CFS** and **Saturación de Memoria (% del Límite)**.
+2. When workloads experience traffic spikes from `loadgenerator`, examine if `frontend` or `cartservice` pods approach the 80% warning threshold or if CFS throttling is triggered.
+3. Correlate CPU Throttling periods with increases in **Latencia HTTP: Percentil p99**, demonstrating why CPU starvation inflates tail response times.
 
 ---
 

@@ -68,7 +68,7 @@ data:
       "liveNow": false,
       "panels": [
         {
-          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+          "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
           "id": 1,
           "title": "Online Boutique Pods",
           "type": "stat",
@@ -87,8 +87,131 @@ data:
           }
         },
         {
-          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+          "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
           "id": 2,
+          "title": "Tasa Global de Peticiones (RPS)",
+          "type": "stat",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[2m])) or sum(rate(prometheus_http_requests_total[2m])) or vector(0)",
+              "legendFormat": "Req/s",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "color": { "mode": "palette-classic" }
+            }
+          },
+          "options": {
+            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+            "colorMode": "value",
+            "graphMode": "area"
+          }
+        },
+        {
+          "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+          "id": 3,
+          "title": "Disponibilidad SLI (Target 99.9% SLO)",
+          "type": "stat",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "expr": "clamp_max((1 - ((sum(rate(http_requests_total{code=~\"5..\"}[5m])) or sum(rate(prometheus_http_requests_total{code=~\"5..\"}[5m])) or vector(0)) / clamp_min(sum(rate(http_requests_total[5m])) or sum(rate(prometheus_http_requests_total[5m])) or vector(1), 0.001))) * 100, 100)",
+              "legendFormat": "SLI Availability %",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 90,
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "#EAB839", "value": 99.0 },
+                  { "color": "green", "value": 99.9 }
+                ]
+              }
+            }
+          },
+          "options": {
+            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+            "colorMode": "value",
+            "graphMode": "none"
+          }
+        },
+        {
+          "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
+          "id": 4,
+          "title": "Ratio de Errores HTTP (%)",
+          "type": "stat",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "expr": "(((sum(rate(http_requests_total{code=~\"[45]..\"}[2m])) or sum(rate(prometheus_http_requests_total{code=~\"[45]..\"}[2m])) or vector(0)) / clamp_min(sum(rate(http_requests_total[2m])) or sum(rate(prometheus_http_requests_total[2m])) or vector(1), 0.001)) * 100)",
+              "legendFormat": "Error Rate %",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "#EAB839", "value": 1.0 },
+                  { "color": "red", "value": 5.0 }
+                ]
+              }
+            }
+          },
+          "options": {
+            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+            "colorMode": "value",
+            "graphMode": "area"
+          }
+        },
+        {
+          "gridPos": { "h": 4, "w": 4, "x": 16, "y": 0 },
+          "id": 5,
+          "title": "Latencia Media (Mean Duration)",
+          "type": "stat",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "targets": [
+            {
+              "expr": "((sum(rate(http_request_duration_seconds_sum[2m])) or sum(rate(prometheus_http_request_duration_seconds_sum[2m]))) / clamp_min(sum(rate(http_request_duration_seconds_count[2m])) or sum(rate(prometheus_http_request_duration_seconds_count[2m])), 0.001)) or vector(0)",
+              "legendFormat": "Avg Duration",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "#EAB839", "value": 0.25 },
+                  { "color": "red", "value": 1.0 }
+                ]
+              }
+            }
+          },
+          "options": {
+            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
+            "colorMode": "value",
+            "graphMode": "area"
+          }
+        },
+        {
+          "gridPos": { "h": 4, "w": 4, "x": 20, "y": 0 },
+          "id": 6,
           "title": "Total Restarts (Boutique)",
           "type": "stat",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -99,6 +222,18 @@ data:
               "refId": "A"
             }
           ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "#EAB839", "value": 1 },
+                  { "color": "red", "value": 5 }
+                ]
+              }
+            }
+          },
           "options": {
             "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
             "colorMode": "value",
@@ -106,52 +241,170 @@ data:
           }
         },
         {
-          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
-          "id": 3,
-          "title": "Total CPU Rate (Cores)",
-          "type": "stat",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+          "id": 7,
+          "title": "Tasa de Peticiones HTTP por Código de Respuesta (RPS)",
+          "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Volumen de peticiones por segundo agrupadas por código HTTP (2xx, 3xx, 4xx, 5xx) - RED Method: Rate.",
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m]))",
-              "legendFormat": "CPU",
+              "expr": "sum by (code) (rate(http_requests_total[2m])) or sum by (code) (rate(prometheus_http_requests_total[2m]))",
+              "legendFormat": "HTTP {{code}}",
               "refId": "A"
             }
           ],
           "fieldConfig": {
-            "defaults": { "unit": "short" }
-          },
-          "options": {
-            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
-            "colorMode": "value",
-            "graphMode": "area"
+            "defaults": {
+              "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 15 },
+              "unit": "reqps"
+            }
           }
         },
         {
-          "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
-          "id": 4,
-          "title": "Total Memory (MB)",
-          "type": "stat",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+          "id": 8,
+          "title": "Tasa de Errores por Código de Fallo HTTP (4xx & 5xx)",
+          "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Tasa de fallos clasificada por código específico (400, 401, 403, 404, 500, 502, 503) - RED Method: Errors.",
           "targets": [
             {
-              "expr": "sum(container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"}) / (1024 * 1024)",
-              "legendFormat": "Memory",
+              "expr": "sum by (code) (rate(http_requests_total{code=~\"[45]..\"}[2m])) or sum by (code) (rate(prometheus_http_requests_total{code=~\"[45]..\"}[2m]))",
+              "legendFormat": "Error {{code}}",
               "refId": "A"
             }
           ],
           "fieldConfig": {
-            "defaults": { "unit": "decmbytes" }
-          },
-          "options": {
-            "reduceOptions": { "values": false, "calcs": ["lastNotNull"] },
-            "colorMode": "value",
-            "graphMode": "area"
+            "defaults": {
+              "custom": { "drawStyle": "bars", "fillOpacity": 80 },
+              "unit": "reqps"
+            }
           }
         },
         {
-          "gridPos": { "h": 9, "w": 12, "x": 0, "y": 4 },
-          "id": 5,
+          "gridPos": { "h": 8, "w": 14, "x": 0, "y": 12 },
+          "id": 9,
+          "title": "Latencia HTTP: Tiempo Medio vs Percentiles (p50 Mediana, p95 SLA, p99 Tail)",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Comparativa entre la latencia promedio y los percentiles de distribución de tiempo de respuesta (RED Method: Duration).",
+          "targets": [
+            {
+              "expr": "((sum(rate(http_request_duration_seconds_sum[2m])) or sum(rate(prometheus_http_request_duration_seconds_sum[2m]))) / clamp_min(sum(rate(http_request_duration_seconds_count[2m])) or sum(rate(prometheus_http_request_duration_seconds_count[2m])), 0.001))",
+              "legendFormat": "Media Aritmética (Mean)",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.50, sum by (le) (rate(http_request_duration_seconds_bucket[2m]))) or histogram_quantile(0.50, sum by (le) (rate(prometheus_http_request_duration_seconds_bucket[2m])))",
+              "legendFormat": "p50 (Mediana)",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[2m]))) or histogram_quantile(0.95, sum by (le) (rate(prometheus_http_request_duration_seconds_bucket[2m])))",
+              "legendFormat": "p95 (SLA Target)",
+              "refId": "C"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket[2m]))) or histogram_quantile(0.99, sum by (le) (rate(prometheus_http_request_duration_seconds_bucket[2m])))",
+              "legendFormat": "p99 (Tail Latency)",
+              "refId": "D"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
+              "unit": "s"
+            }
+          }
+        },
+        {
+          "gridPos": { "h": 8, "w": 10, "x": 14, "y": 12 },
+          "id": 10,
+          "title": "Disponibilidad del Servicio SLI vs Objetivo SLO (99.9%)",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Evolución temporal del SLI de disponibilidad frente a los umbrales de objetivo de confiabilidad.",
+          "targets": [
+            {
+              "expr": "clamp_max((1 - ((sum(rate(http_requests_total{code=~\"5..\"}[5m])) or sum(rate(prometheus_http_requests_total{code=~\"5..\"}[5m])) or vector(0)) / clamp_min(sum(rate(http_requests_total[5m])) or sum(rate(prometheus_http_requests_total[5m])) or vector(1), 0.001))) * 100, 100)",
+              "legendFormat": "Disponibilidad SLI (%)",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": { "drawStyle": "line", "thresholdsStyle": { "mode": "line" } },
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "#EAB839", "value": 99.0 },
+                  { "color": "green", "value": 99.9 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
+          "id": 11,
+          "title": "Saturación de Memoria por Microservicio (% del Límite)",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Saturación de memoria según USE Method. Alerta amarilla al 80%, crítica al 95% (riesgo de OOMKilled).",
+          "targets": [
+            {
+              "expr": "100 * (sum by (pod) (container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"}) / clamp_min(sum by (pod) (kube_pod_container_resource_limits{namespace=\"boutique\", resource=\"memory\"}), 1))",
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "thresholdsStyle": { "mode": "line" } },
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "#EAB839", "value": 80.0 },
+                  { "color": "red", "value": 95.0 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
+          "id": 12,
+          "title": "Saturación de CPU y Throttling CFS por Microservicio",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "description": "Saturación de CPU según USE Method: mide % de periodos estrangulados (CFS Throttling) y % respecto al límite.",
+          "targets": [
+            {
+              "expr": "100 * (sum by (pod) (rate(container_cpu_cfs_throttled_periods_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])) / clamp_min(sum by (pod) (rate(container_cpu_cfs_periods_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])), 0.001))",
+              "legendFormat": "{{pod}} [CFS Throttled %]",
+              "refId": "A"
+            },
+            {
+              "expr": "100 * (sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m])) / clamp_min(sum by (pod) (kube_pod_container_resource_limits{namespace=\"boutique\", resource=\"cpu\"}), 0.001))",
+              "legendFormat": "{{pod}} [Uso % Límite]",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
+              "unit": "percent"
+            }
+          }
+        },
+        {
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+          "id": 13,
           "title": "CPU Usage per Microservice (Cores)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -170,8 +423,8 @@ data:
           }
         },
         {
-          "gridPos": { "h": 9, "w": 12, "x": 12, "y": 4 },
-          "id": 6,
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+          "id": 14,
           "title": "Memory Working Set per Microservice",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -190,8 +443,8 @@ data:
           }
         },
         {
-          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
-          "id": 7,
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 36 },
+          "id": 15,
           "title": "Network Ingress (Received Bytes/sec)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -210,8 +463,8 @@ data:
           }
         },
         {
-          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
-          "id": 8,
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 36 },
+          "id": 16,
           "title": "Network Egress (Transmitted Bytes/sec)",
           "type": "timeseries",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -230,9 +483,9 @@ data:
           }
         },
         {
-          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 21 },
-          "id": 9,
-          "title": "Microservices Detailed Breakdown",
+          "gridPos": { "h": 9, "w": 24, "x": 0, "y": 44 },
+          "id": 17,
+          "title": "Matriz Detallada de Microservicios: Recursos, Límites y Reinicios",
           "type": "table",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
           "targets": [
@@ -240,13 +493,25 @@ data:
               "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"boutique\", container!=\"\", container!=\"POD\"}[2m]))",
               "format": "table",
               "instant": true,
-              "refId": "CPU"
+              "refId": "CPU_Cores"
             },
             {
               "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"boutique\", container!=\"\", container!=\"POD\"})",
               "format": "table",
               "instant": true,
-              "refId": "Memory"
+              "refId": "Memory_Bytes"
+            },
+            {
+              "expr": "sum by (pod) (kube_pod_container_resource_limits{namespace=\"boutique\", resource=\"memory\"})",
+              "format": "table",
+              "instant": true,
+              "refId": "Memory_Limit_Bytes"
+            },
+            {
+              "expr": "sum by (pod) (kube_pod_container_status_restarts_total{namespace=\"boutique\"})",
+              "format": "table",
+              "instant": true,
+              "refId": "Restarts"
             }
           ]
         }
@@ -254,12 +519,12 @@ data:
       "refresh": "10s",
       "schemaVersion": 38,
       "style": "dark",
-      "tags": ["online-boutique", "microservices", "kubernetes"],
+      "tags": ["online-boutique", "microservices", "kubernetes", "sre", "golden-signals", "red-method", "use-method"],
       "time": { "from": "now-15m", "to": "now" },
       "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m"] },
       "timezone": "browser",
       "title": "Online Boutique - Microservices Telemetry & Performance",
-      "version": 1
+      "version": 2
     }
 ---
 apiVersion: apps/v1

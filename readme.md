@@ -42,7 +42,7 @@ This repository provides a complete two-layer architecture to deploy, manage, an
 - **Prometheus & Grafana Monitoring Stack:** Complete observability suite in namespace `monitoring`:
   - **Prometheus:** High-performance telemetry server scraping cAdvisor container metrics, kube-state-metrics, and pod annotations.
   - **kube-state-metrics:** Exposes cluster-level object metrics, pod lifecycle states, and container restart counters.
-  - **Grafana:** Pre-configured with automated Prometheus datasource and a comprehensive, production-grade **Online Boutique Microservices Dashboard** measuring per-microservice CPU, memory, network RX/TX, and replica health.
+  - **Grafana:** Pre-configured with automated Prometheus datasource and a comprehensive, production-grade **Online Boutique SRE Telemetry & Performance Dashboard** tracking **Google SRE Golden Signals**, **RED Method** (Request Rate RPS, HTTP Error Rate by status code, Latency Mean vs p50/p95/p99), **USE Method** (Memory & CPU CFS Throttling Saturation), and **SLI/SLO Availability (99.9%)**.
 - See the complete deployment guide and lab exercises in [kubernetes/manifests/README.md](file:///home/joanr/agentic-platforms/GCP/K8SLab1/kubernetes/manifests/README.md).
 
 ---
