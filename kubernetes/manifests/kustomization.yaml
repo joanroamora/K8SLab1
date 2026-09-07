@@ -5,3 +5,6 @@ resources:
   - 00-namespaces/namespace.yaml
   - 01-boutique/release-complete.yaml
   - 02-dashboard/01-headlamp.yaml
+  - 03-monitoring/01-prometheus.yaml
+  - 03-monitoring/02-kube-state-metrics.yaml
+  - 03-monitoring/03-grafana.yaml

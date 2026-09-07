@@ -13,3 +13,11 @@ metadata:
   labels:
     name: headlamp
     app.kubernetes.io/part-of: control-plane
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    app.kubernetes.io/part-of: observability

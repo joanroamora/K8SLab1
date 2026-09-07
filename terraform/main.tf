@@ -86,6 +86,18 @@ resource "google_container_cluster" "primary" {
     channel = "REGULAR"
   }
 
+  # Observability and Telemetry configuration
+  monitoring_config {
+    enable_components = ["SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "STORAGE", "POD", "DEPLOYMENT"]
+    managed_prometheus {
+      enabled = true
+    }
+  }
+
+  logging_config {
+    enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  }
+
   depends_on = [
     google_project_service.container,
     google_compute_router_nat.nat

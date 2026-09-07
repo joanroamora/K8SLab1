@@ -27,3 +27,9 @@ variable "subnet_name" {
   type        = string
   default     = "gke-subnet"
 }
+
+variable "enable_monitoring_automation" {
+  description = "Enable automatic deployment of Kubernetes workloads and monitoring manifests upon cluster creation"
+  type        = bool
+  default     = true
+}
