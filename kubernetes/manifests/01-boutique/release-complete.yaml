@@ -79,6 +79,7 @@ kind: ServiceAccount
 metadata:
   name: emailservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -163,6 +164,7 @@ kind: ServiceAccount
 metadata:
   name: checkoutservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -246,6 +248,7 @@ kind: ServiceAccount
 metadata:
   name: recommendationservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -364,6 +367,7 @@ kind: ServiceAccount
 metadata:
   name: frontend
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -439,6 +443,7 @@ kind: ServiceAccount
 metadata:
   name: paymentservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -520,6 +525,7 @@ kind: ServiceAccount
 metadata:
   name: productcatalogservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -596,6 +602,7 @@ kind: ServiceAccount
 metadata:
   name: cartservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -678,6 +685,7 @@ kind: ServiceAccount
 metadata:
   name: currencyservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -753,6 +761,7 @@ kind: ServiceAccount
 metadata:
   name: shippingservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -830,6 +839,7 @@ kind: ServiceAccount
 metadata:
   name: adservice
   namespace: boutique
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -904,6 +914,7 @@ spec:
   - name: tcp-redis
     port: 6379
     targetPort: 6379
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
