@@ -50,11 +50,21 @@ data:
         dfScript.async = true;
         document.head.appendChild(dfScript);
 
+        // Clear any stored chat session upon reload
+        try {
+          sessionStorage.removeItem('messages');
+          sessionStorage.removeItem('sessionID');
+          sessionStorage.removeItem('chatBubbleExpansion');
+          sessionStorage.removeItem('lastResponseInstant');
+          sessionStorage.removeItem('chatScrollDistance');
+        } catch (e) {}
+
         // 3. Inject df-messenger Custom Element directly to body (once)
         var dfElem = document.createElement('df-messenger');
         dfElem.setAttribute('location', 'global');
         dfElem.setAttribute('project-id', 'bitcitychamp-project');
         dfElem.setAttribute('agent-id', '7f6c3a7a-8257-42b0-8161-97b07f9f06dd');
+        dfElem.setAttribute('storage-option', 'none');
         var userLang = (navigator.language && navigator.language.startsWith('es')) ? 'es' : 'en';
         dfElem.setAttribute('language-code', userLang);
         dfElem.setAttribute('max-query-length', '-1');
