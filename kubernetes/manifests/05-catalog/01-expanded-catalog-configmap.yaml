@@ -1,0 +1,941 @@
+apiVersion: v1
+data:
+  products.json: |-
+    {
+      "products": [
+        {
+          "id": "OLJCESPC7Z",
+          "name": "Aviator Sunglasses",
+          "description": "Add a modern touch to your outfits with these sleek aviator sunglasses crafted with UV400 polarized lenses.",
+          "picture": "/static/img/products/sunglasses.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 19,
+            "nanos": 990000000
+          },
+          "categories": [
+            "accessories",
+            "eyewear"
+          ]
+        },
+        {
+          "id": "66VCHSJNUP",
+          "name": "Minimalist Tank Top",
+          "description": "Perfectly cropped organic cotton tank, with a scooped neckline and tailored fit.",
+          "picture": "/static/img/products/tank-top.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 18,
+            "nanos": 990000000
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "1YMWWN1N4O",
+          "name": "Gold Horizon Watch",
+          "description": "This gold-tone stainless steel timepiece features a Japanese quartz movement and scratch-resistant sapphire glass.",
+          "picture": "/static/img/products/watch.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 109,
+            "nanos": 990000000
+          },
+          "categories": [
+            "accessories",
+            "luxury",
+            "watches"
+          ]
+        },
+        {
+          "id": "L9ECAV7KIM",
+          "name": "Italian Suede Loafers",
+          "description": "A neat addition to your summer wardrobe, hand-stitched with supple Italian suede and ergonomic insoles.",
+          "picture": "/static/img/products/loafers.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 89,
+            "nanos": 990000000
+          },
+          "categories": [
+            "footwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "2ZYFJ3GM2N",
+          "name": "Ultralight Hairdryer",
+          "description": "This lightweight ionic hairdryer has 3 heat and speed settings with tourmaline ceramic technology. Perfect for travel.",
+          "picture": "/static/img/products/hairdryer.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 24,
+            "nanos": 990000000
+          },
+          "categories": [
+            "beauty",
+            "appliances"
+          ]
+        },
+        {
+          "id": "0PUK6V6EV0",
+          "name": "Geometric Candle Holder",
+          "description": "This small but intricate matte ceramic candle holder brings architectural warmth to any modern living room.",
+          "picture": "/static/img/products/candle-holder.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 18,
+            "nanos": 990000000
+          },
+          "categories": [
+            "home",
+            "decor"
+          ]
+        },
+        {
+          "id": "6E92ZMYYFZ",
+          "name": "Mustard Ceramic Mug",
+          "description": "A simple artisanal ceramic mug with a warm mustard glazed interior and ergonomic matte exterior.",
+          "picture": "/static/img/products/mug.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 8,
+            "nanos": 990000000
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "9SIQT8TOJO",
+          "name": "Bamboo Glass Jar",
+          "description": "This borosilicate glass storage canister with airtight bamboo lid holds 57 oz (1.7 L), perfect for whole beans or pantry staples.",
+          "picture": "/static/img/products/bamboo-glass-jar.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 5,
+            "nanos": 490000000
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "LS4PSXUNUM",
+          "name": "Minimal Salt & Pepper Shakers",
+          "description": "Add sculptural flavor to your dining table with this weighted brushed metal salt and pepper set.",
+          "picture": "/static/img/products/salt-and-pepper-shakers.jpg",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 18,
+            "nanos": 490000000
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "ACC001MODL",
+          "name": "Matte Black Wayfarer Sunglasses",
+          "description": "Hand-finished cellulose acetate frames with polarized gradient lenses offering 100% UV protection.",
+          "picture": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 45,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "eyewear"
+          ]
+        },
+        {
+          "id": "ACC002GLDN",
+          "name": "Hexagonal Gold Sunglasses",
+          "description": "Geometric titanium frames with ultra-thin temples and green tinted mineral glass lenses.",
+          "picture": "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 62,
+            "nanos": 500000000
+          },
+          "categories": [
+            "accessories",
+            "eyewear"
+          ]
+        },
+        {
+          "id": "ACC003WLTR",
+          "name": "Full-Grain Leather Cardholder",
+          "description": "Slim RFID-blocking wallet handcrafted from vegetable-tanned Italian leather with 6 card slots.",
+          "picture": "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 34,
+            "nanos": 990000000
+          },
+          "categories": [
+            "accessories",
+            "leather"
+          ]
+        },
+        {
+          "id": "ACC004BPLT",
+          "name": "Nordic Commuter Backpack",
+          "description": "Waterproof recycled polyester shell with a padded 16-inch laptop compartment and magnetic roll-top.",
+          "picture": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 95,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "bags"
+          ]
+        },
+        {
+          "id": "ACC005HNDB",
+          "name": "Sculptural Leather Crossbody Bag",
+          "description": "Structured calfskin shoulder bag with custom brass hardware and interior suede lining.",
+          "picture": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 145,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "luxury",
+            "bags"
+          ]
+        },
+        {
+          "id": "ACC006TOTE",
+          "name": "Canvas Atelier Tote",
+          "description": "Heavyweight 16oz organic cotton canvas tote reinforced with full-grain leather shoulder straps.",
+          "picture": "https://images.unsplash.com/photo-1513094735237-8f2714d57c13?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 42,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "bags"
+          ]
+        },
+        {
+          "id": "ACC007SLKC",
+          "name": "Mulberry Silk Scarf",
+          "description": "100% pure 18-momme mulberry silk twill printed with abstract minimalist monochrome geometry.",
+          "picture": "https://images.unsplash.com/photo-1575032617751-6ddec2089882?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 58,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "luxury"
+          ]
+        },
+        {
+          "id": "ACC008CAPM",
+          "name": "Washed Twill Minimalist Cap",
+          "description": "Unstructured 6-panel silhouette in garment-dyed cotton twill with an adjustable antique brass buckle.",
+          "picture": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 26,
+            "nanos": 500000000
+          },
+          "categories": [
+            "accessories"
+          ]
+        },
+        {
+          "id": "WAT009CHRN",
+          "name": "Chronograph Stealth Watch",
+          "description": "Surgical grade 316L black PVD coated steel case with sapphire crystal and dual-subdial chronograph.",
+          "picture": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 139,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "watches",
+            "luxury"
+          ]
+        },
+        {
+          "id": "WAT010CLAS",
+          "name": "Automatic Silver Watch",
+          "description": "Self-winding Japanese mechanical movement with 40-hour power reserve and open caseback.",
+          "picture": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 185,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "watches",
+            "luxury"
+          ]
+        },
+        {
+          "id": "WAT011SMRT",
+          "name": "Minimal Smart Fitness Band",
+          "description": "Ultra-thin OLED tracker featuring continuous heart-rate monitoring, sleep staging, and 7-day battery.",
+          "picture": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 79,
+            "nanos": 990000000
+          },
+          "categories": [
+            "accessories",
+            "electronics",
+            "watches"
+          ]
+        },
+        {
+          "id": "WAT012LEAT",
+          "name": "Vintage Cognac Watch Strap",
+          "description": "Handcrafted Horween leather replacement strap with quick-release spring bars and brushed stainless buckle.",
+          "picture": "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 32,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "watches"
+          ]
+        },
+        {
+          "id": "WAT013NCKL",
+          "name": "18k Gold Minimal Chain",
+          "description": "Delicate 18k gold vermeil box chain necklace with a subtle high-polish cylinder pendant.",
+          "picture": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 92,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "luxury"
+          ]
+        },
+        {
+          "id": "WAT014BRCL",
+          "name": "Brushed Sterling Silver Cuff",
+          "description": "Solid 925 sterling silver open cuff bracelet hand-finished with a subtle satin texture.",
+          "picture": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 68,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "luxury"
+          ]
+        },
+        {
+          "id": "FTW015SNKR",
+          "name": "CloudTech White Leather Sneakers",
+          "description": "Minimalist low-top trainers in full-grain Italian nappa leather with cushioned memory foam insoles.",
+          "picture": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 110,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear"
+          ]
+        },
+        {
+          "id": "FTW016CHLS",
+          "name": "Weatherproof Chelsea Boots",
+          "description": "Oiled full-grain leather boots with elasticated side gussets and durable Vibram lug soles.",
+          "picture": "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 165,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "FTW017RUNN",
+          "name": "AeroKnit Performance Runners",
+          "description": "Breathable engineered knit upper with high-rebound responsive foam for urban jogging or daily walks.",
+          "picture": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 88,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear"
+          ]
+        },
+        {
+          "id": "FTW018OXFD",
+          "name": "Burnished Leather Oxford Shoes",
+          "description": "Goodyear welted formal dress shoes crafted from hand-patinated calfskin with stacked leather heels.",
+          "picture": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 175,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "FTW019HEEL",
+          "name": "Sculpted Heel Leather Pumps",
+          "description": "Architectural 65mm block heels with an elegant pointed toe and supple lambskin lining.",
+          "picture": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 130,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "FTW020SNDL",
+          "name": "Ergonomic Leather Slide Sandals",
+          "description": "Contoured anatomical cork footbed wrapped in ultra-soft oiled nubuck leather for effortless leisure.",
+          "picture": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 54,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear"
+          ]
+        },
+        {
+          "id": "FTW021ESPD",
+          "name": "Hand-Sewn Canvas Espadrilles",
+          "description": "Natural braided jute sole reinforced with vulcanized rubber and breathable organic cotton canvas.",
+          "picture": "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 48,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear"
+          ]
+        },
+        {
+          "id": "FTW022MOCS",
+          "name": "Driving Moccasins in Sand Suede",
+          "description": "Classic split-sole driving shoes with rubber pebble pods and tonal hand-stitched detailing.",
+          "picture": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 98,
+            "nanos": 0
+          },
+          "categories": [
+            "footwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "CLO023TEEW",
+          "name": "Heavyweight Relaxed White T-Shirt",
+          "description": "Crafted from 280 GSM combed organic cotton with reinforced collar and pre-shrunk boxy cut.",
+          "picture": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 32,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "CLO024TEEB",
+          "name": "Noir Minimalist Black T-Shirt",
+          "description": "Silky mercerized Pima cotton crewneck with pitch-black color-retention wash.",
+          "picture": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 35,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "CLO025DNMJ",
+          "name": "Japanese Selvedge Denim Jacket",
+          "description": "14oz raw indigo Kurabo denim jacket with custom donut buttons and felled chain-stitched seams.",
+          "picture": "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 140,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "outerwear"
+          ]
+        },
+        {
+          "id": "CLO026WOLC",
+          "name": "Tailored Wool Overcoat",
+          "description": "Double-faced Melton wool coat in camel beige with structured shoulders and horn buttons.",
+          "picture": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 240,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "outerwear",
+            "luxury"
+          ]
+        },
+        {
+          "id": "CLO027BLZR",
+          "name": "Unstructured Linen Blazer",
+          "description": "Pure Normandy linen jacket with patch pockets, unlined interior, and natural breathability.",
+          "picture": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 165,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "outerwear"
+          ]
+        },
+        {
+          "id": "CLO028CSHM",
+          "name": "Grade-A Cashmere Knit Crewneck",
+          "description": "Ultra-soft 2-ply Mongolian cashmere sweater with ribbed cuffs and timeless clean lines.",
+          "picture": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 125,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops",
+            "luxury"
+          ]
+        },
+        {
+          "id": "CLO029POLO",
+          "name": "Textured Knit Mercerized Polo",
+          "description": "Vintage collar knit polo in breathable waffle-cotton weave with mother-of-pearl buttons.",
+          "picture": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 52,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "CLO030TRSR",
+          "name": "Pleated Wool Flannel Trousers",
+          "description": "Mid-rise relaxed tapered trousers tailored in charcoal grey Italian wool flannel.",
+          "picture": "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 115,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "bottoms"
+          ]
+        },
+        {
+          "id": "CLO031HOOD",
+          "name": "Loopback Terry French Hoodie",
+          "description": "Heavy 450 GSM French terry pullover with clean kangaroo pocket and double-lined hood.",
+          "picture": "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 74,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "CLO032SHRT",
+          "name": "Oxford Cotton Button-Down Shirt",
+          "description": "Crisp pinpoint Oxford woven from American Supima cotton with a relaxed button-down collar.",
+          "picture": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 65,
+            "nanos": 0
+          },
+          "categories": [
+            "clothing",
+            "tops"
+          ]
+        },
+        {
+          "id": "ELE033HDPH",
+          "name": "Aura Wireless Studio Headphones",
+          "description": "Hybrid active noise-cancelling over-ear headphones with 40mm beryllium drivers and 38-hour battery.",
+          "picture": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 199,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics",
+            "audio"
+          ]
+        },
+        {
+          "id": "ELE034EARB",
+          "name": "Titan True Wireless Earbuds",
+          "description": "IPX7 waterproof in-ear monitors with transparency mode, wireless charging case, and spatial audio.",
+          "picture": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 89,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics",
+            "audio"
+          ]
+        },
+        {
+          "id": "ELE035KYBD",
+          "name": "Solid Walnut Mechanical Keyboard",
+          "description": "Compact 75% layout with CNC milled solid walnut case, hot-swappable lubricated linear switches.",
+          "picture": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 148,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics"
+          ]
+        },
+        {
+          "id": "ELE036MOUS",
+          "name": "Ergonomic Precision Wireless Mouse",
+          "description": "Sculpted thumb rest, dual magnetic scroll wheel, and high-precision 8K DPI sensor for creators.",
+          "picture": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 69,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics"
+          ]
+        },
+        {
+          "id": "ELE037SPKR",
+          "name": "Acoustic Portable Bluetooth Speaker",
+          "description": "360-degree room-filling acoustic profile wrapped in acoustic wool fabric with 24-hour battery.",
+          "picture": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 119,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics",
+            "audio"
+          ]
+        },
+        {
+          "id": "ELE038CAMR",
+          "name": "Classic 35mm Compact Camera",
+          "description": "Analog rangefinder-styled point and shoot with coated f/2.8 prime lens and built-in flash.",
+          "picture": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 189,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics",
+            "photography"
+          ]
+        },
+        {
+          "id": "ELE039CHAR",
+          "name": "MagSafe Minimalist Charging Dock",
+          "description": "Machined aircraft aluminum charging stand with dual 15W Qi2 fast charging and weighted base.",
+          "picture": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 55,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics"
+          ]
+        },
+        {
+          "id": "ELE040AUDO",
+          "name": "Hi-Fi Desktop Studio DAC",
+          "description": "Audiophile digital-to-analog converter and headphone amplifier with ESS Sabre 32-bit architecture.",
+          "picture": "https://images.unsplash.com/photo-1583394293214-28ded15ee548?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 129,
+            "nanos": 0
+          },
+          "categories": [
+            "electronics",
+            "audio"
+          ]
+        },
+        {
+          "id": "HOM041BRWR",
+          "name": "Pour-Over Glass Coffee Dripper Set",
+          "description": "Heat-resistant borosilicate glass carafe with double-layer laser cut stainless steel mesh filter.",
+          "picture": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 38,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "HOM042LAMP",
+          "name": "Minimalist Architectural Desk Lamp",
+          "description": "Balanced cantilever arm in matte black anodized aluminum with warm touch-dimmable LED lighting.",
+          "picture": "https://images.unsplash.com/photo-1507764983923-d637a28e7e17?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 85,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "decor"
+          ]
+        },
+        {
+          "id": "HOM043BWLS",
+          "name": "Handmade Stoneware Serving Bowl",
+          "description": "Wheel-thrown ceramic bowl with natural speckling and a raw unglazed exterior base.",
+          "picture": "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 36,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "HOM044DFSR",
+          "name": "Stone Ultrasonic Aroma Diffuser",
+          "description": "Handcrafted porcelain stoneware cover with ambient gentle glow and whisper-quiet ultrasonic mist.",
+          "picture": "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 64,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "wellness"
+          ]
+        },
+        {
+          "id": "HOM045CHIR",
+          "name": "Nordic Ash Dining Chair",
+          "description": "Solid steam-bent ash wood frame with a curved supportive backrest and woven natural paper cord seat.",
+          "picture": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 195,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "decor",
+            "luxury"
+          ]
+        },
+        {
+          "id": "HOM046MUGG",
+          "name": "Clay Craft Speckled Latte Cup",
+          "description": "Comfortable hand-pinched ceramic cup holding 12 oz, coated with a silky soft-touch satin glaze.",
+          "picture": "https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 16,
+            "nanos": 500000000
+          },
+          "categories": [
+            "home",
+            "kitchen"
+          ]
+        },
+        {
+          "id": "HOM047NOTE",
+          "name": "Clothbound Grid Journal & Brass Pen",
+          "description": "Archival 100 GSM fountain-pen friendly fountain paper notebook paired with a solid brass machined ballpoint.",
+          "picture": "https://images.unsplash.com/photo-1589365278144-c9e705f843ba?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 32,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "stationery"
+          ]
+        },
+        {
+          "id": "HOM048PRFM",
+          "name": "Santal & Cedarwood Eau de Parfum",
+          "description": "Smoky Australian sandalwood blended with cardamom, violet iris, and Tuscan leather notes (50ml).",
+          "picture": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 96,
+            "nanos": 0
+          },
+          "categories": [
+            "beauty",
+            "luxury"
+          ]
+        },
+        {
+          "id": "HOM049SKIN",
+          "name": "Botanical Nourishing Face Oil",
+          "description": "Cold-pressed rosehip, squalane, and organic jojoba oil elixir for deep overnight hydration (30ml).",
+          "picture": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 44,
+            "nanos": 0
+          },
+          "categories": [
+            "beauty",
+            "wellness"
+          ]
+        },
+        {
+          "id": "HOM050AMBR",
+          "name": "Amber Glass Apothecary Candle",
+          "description": "100% natural soy wax scented with crisp bergamot, tobacco leaf, and amber resin in a vintage apothecary vessel.",
+          "picture": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 22,
+            "nanos": 0
+          },
+          "categories": [
+            "home",
+            "decor"
+          ]
+        },
+        {
+          "id": "HOM051FRAG",
+          "name": "Vetiver Noir Fine Fragrance",
+          "description": "Crisp vetiver roots infused with pink pepper, ambergris, and bitter orange blossom in an architectural flacon.",
+          "picture": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 105,
+            "nanos": 0
+          },
+          "categories": [
+            "beauty",
+            "luxury"
+          ]
+        },
+        {
+          "id": "HOM052COLL",
+          "name": "Braided Italian Leather Pet Collar",
+          "description": "Supple vegetable-tanned bridle leather collar with solid cast brass D-ring and hardware.",
+          "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 38,
+            "nanos": 0
+          },
+          "categories": [
+            "accessories",
+            "home"
+          ]
+        },
+        {
+          "id": "HOM053SERM",
+          "name": "Hyaluronic Glow Hydrating Serum",
+          "description": "Multi-molecular weight hyaluronic acid complex infused with soothing botanical chamomile extract.",
+          "picture": "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&auto=format&fit=crop&q=80",
+          "priceUsd": {
+            "currencyCode": "USD",
+            "units": 46,
+            "nanos": 0
+          },
+          "categories": [
+            "beauty",
+            "wellness"
+          ]
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  name: product-catalog-expanded
+  namespace: boutique

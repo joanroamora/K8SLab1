@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productcatalogservice
+  namespace: boutique
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        volumeMounts:
+        - name: product-catalog-expanded-vol
+          mountPath: /src/products.json
+          subPath: products.json
+          readOnly: true
+      volumes:
+      - name: product-catalog-expanded-vol
+        configMap:
+          name: product-catalog-expanded
