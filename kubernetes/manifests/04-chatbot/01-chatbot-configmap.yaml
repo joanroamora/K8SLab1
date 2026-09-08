@@ -12,11 +12,12 @@ data:
     {{ define "footer" }}
 
     <!-- ======================================================================= -->
-    <!-- Minimalist & Sophisticated Luxury Design Overhaul System               -->
+    <!-- Minimalist & Sophisticated Studio Luxury Design Architecture            -->
+    <!-- Clean, High-Contrast Light Editorial Palette (100% Crystal-Clear Text) -->
     <!-- ======================================================================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <footer class="py-5 boutique-luxury-footer">
         <div class="footer-top">
@@ -24,7 +25,7 @@ data:
                 <div class="footer-brand-title">ONLINE BOUTIQUE</div>
                 <p class="footer-tagline">Curated Minimalist Lifestyle, Living &amp; Everyday Technology</p>
                 <div class="footer-divider"></div>
-                <p class="footer-text">&copy; 2020-{{ .currentYear }} Online Boutique LLC &bull; Advanced Agentic Cloud Architecture</p>
+                <p class="footer-text">&copy; 2020-{{ .currentYear }} Online Boutique LLC &bull; Advanced Cloud Architecture</p>
                 <p class="footer-text">
                     <span class="session-badge">
                         {{ with $.session_id }}
@@ -79,8 +80,8 @@ data:
         dfElem.setAttribute('max-query-length', '-1');
 
         var dfBubble = document.createElement('df-messenger-chat-bubble');
-        dfBubble.setAttribute('chat-title', userLang === 'es' ? 'Concierge IA &bull; Online Boutique' : 'AI Concierge &bull; Online Boutique');
-        dfBubble.setAttribute('placeholder-text', userLang === 'es' ? 'Pregunta sobre 60+ productos, envíos, precios...' : 'Ask about 60+ products, shipping, prices...');
+        dfBubble.setAttribute('chat-title', userLang === 'es' ? 'Asistente IA &bull; Online Boutique' : 'AI Assistant &bull; Online Boutique');
+        dfBubble.setAttribute('placeholder-text', userLang === 'es' ? 'Pregunta sobre productos, envíos, precios...' : 'Ask about products, shipping, prices...');
         dfElem.appendChild(dfBubble);
 
         document.body.appendChild(dfElem);
@@ -92,7 +93,7 @@ data:
           console.error(JSON.stringify(err, null, 2));
         });
 
-        // 5. Aesthetic DOM Enhancer (Client-Side Fluid Layout & Categories)
+        // 5. Aesthetic DOM Enhancer
         document.addEventListener('DOMContentLoaded', function() {
           enhanceStorefrontUI();
         });
@@ -101,23 +102,23 @@ data:
         }
 
         function enhanceStorefrontUI() {
-          // A. Beautify Navigation Brand
+          // A. Clean Minimalist Brand
           var brand = document.querySelector('.navbar-brand');
           if (brand && !brand.dataset.styled) {
             brand.dataset.styled = 'true';
-            brand.innerHTML = '<span class="luxury-logo-symbol">&#x25C7;</span><span class="luxury-logo-text">BOUTIQUE<span class="luxury-logo-accent">.AI</span></span>';
+            brand.innerHTML = '<span class="luxury-logo-symbol">&#x25C7;</span><span class="luxury-logo-text">ONLINE BOUTIQUE</span>';
           }
 
-          // B. Transform Hero Banner into Sophisticated Luxury Minimalist Editorial
+          // B. Minimalist Studio Editorial Hero
           var desktopHero = document.querySelector('.home-desktop-hero-banner');
           if (desktopHero && !desktopHero.dataset.styled) {
             desktopHero.dataset.styled = 'true';
             desktopHero.innerHTML = [
               '<div class="editorial-hero-container">',
               '  <div class="editorial-hero-content">',
-              '    <span class="editorial-hero-badge">NEW COLLECTION &bull; 60+ EXCLUSIVE PIECES</span>',
-              '    <h1 class="editorial-hero-title">Intentional Living.<br>Refined by Modern Design.</h1>',
-              '    <p class="editorial-hero-subtitle">Explore timeless essentials crafted with architectural precision, sustainable materials, and contemporary sophistication.</p>',
+              '    <span class="editorial-hero-badge">NEW SEASON &bull; 60+ EXCLUSIVE PIECES</span>',
+              '    <h1 class="editorial-hero-title">Curated Essentials.<br>Architectural Simplicity.</h1>',
+              '    <p class="editorial-hero-subtitle">Timeless designs crafted with uncompromising quality, sustainable materials, and minimalist elegance.</p>',
               '    <div class="editorial-hero-cta">',
               '      <a href="#catalog-grid" class="editorial-btn-primary">Explore Catalog</a>',
               '      <button type="button" class="editorial-btn-secondary" onclick="openChatConcierge()">Consult AI Concierge</button>',
@@ -133,13 +134,13 @@ data:
             mobileHero.innerHTML = [
               '<div class="editorial-hero-container mobile">',
               '  <span class="editorial-hero-badge">COLLECTION 2026</span>',
-              '  <h2 class="editorial-hero-title">Intentional Living.</h2>',
-              '  <p class="editorial-hero-subtitle">60+ curated pieces designed for effortless elegance.</p>',
+              '  <h2 class="editorial-hero-title">Curated Essentials.</h2>',
+              '  <p class="editorial-hero-subtitle">60+ exclusive pieces designed for everyday elegance.</p>',
               '</div>'
             ].join('\n');
           }
 
-          // C. Inject Interactive Category Filter Bar
+          // C. Category Filter Bar
           var productGrid = document.querySelector('.row.hot-product-row, .row.products-row, .row:has(.hot-product-card)');
           if (!productGrid) {
             var cards = document.querySelectorAll('.hot-product-card');
@@ -156,24 +157,23 @@ data:
             filterBar.innerHTML = [
               '<div class="catalog-header-flex">',
               '  <div>',
-              '    <h2 class="catalog-section-title">The Complete Catalog</h2>',
-              '    <p class="catalog-section-desc">Showing 60+ handcrafted goods &bull; Worldwide shipping &bull; 30-day returns</p>',
+              '    <h2 class="catalog-section-title">The Curated Collection</h2>',
+              '    <p class="catalog-section-desc">Showing 60+ handcrafted pieces &bull; Worldwide shipping &bull; 30-day returns</p>',
               '  </div>',
               '  <div class="category-pills" id="category-pills">',
-              '    <button class="cat-pill active" data-cat="all">All Pieces (62)</button>',
+              '    <button class="cat-pill active" data-cat="all">All (62)</button>',
               '    <button class="cat-pill" data-cat="accessories">Accessories</button>',
               '    <button class="cat-pill" data-cat="clothing">Apparel</button>',
               '    <button class="cat-pill" data-cat="footwear">Footwear</button>',
               '    <button class="cat-pill" data-cat="watches">Timepieces</button>',
               '    <button class="cat-pill" data-cat="electronics">Electronics</button>',
-              '    <button class="cat-pill" data-cat="home">Home &amp; Decor</button>',
+              '    <button class="cat-pill" data-cat="home">Home &amp; Living</button>',
               '    <button class="cat-pill" data-cat="beauty">Beauty</button>',
               '  </div>',
               '</div>'
             ].join('\n');
             productGrid.parentElement.insertBefore(filterBar, productGrid);
 
-            // Add Click Filter Events
             var pills = document.querySelectorAll('.cat-pill');
             pills.forEach(function(pill) {
               pill.addEventListener('click', function() {
@@ -184,23 +184,20 @@ data:
             });
           }
 
-          // D. Refine each product card visually
+          // D. Product card badges
           var cards = document.querySelectorAll('.hot-product-card');
           cards.forEach(function(card) {
             if (card.dataset.enhanced) return;
             card.dataset.enhanced = 'true';
 
-            // Extract Name and link
             var titleElem = card.querySelector('.hot-product-card-name');
             var priceElem = card.querySelector('.hot-product-card-price');
-            var imgElem = card.querySelector('img');
             var linkElem = card.querySelector('a');
 
             if (titleElem && priceElem && linkElem) {
-              // Add quick-view visual cue
               var actionTag = document.createElement('div');
               actionTag.className = 'product-card-action-cue';
-              actionTag.innerHTML = '<span>View Piece</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+              actionTag.innerHTML = '<span>View Piece</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
               card.appendChild(actionTag);
             }
           });
@@ -249,32 +246,30 @@ data:
     </script>
 
     <!-- ======================================================================= -->
-    <!-- Sophisticated Minimalist Dark Luxury CSS Architecture                   -->
+    <!-- Clean, High-Contrast Minimalist Luxury Stylesheet                       -->
     <!-- ======================================================================= -->
     <style>
-      /* --- Root Design System Tokens --- */
+      /* --- Root Design System Tokens (Clean Studio Aesthetic) --- */
       :root {
-        --bg-base: #090d16;
-        --bg-surface: #111726;
-        --bg-surface-elevated: #182236;
-        --bg-surface-hover: #1e2a44;
-        --bg-glass: rgba(13, 18, 30, 0.78);
-        --border-subtle: rgba(255, 255, 255, 0.08);
-        --border-focus: rgba(99, 102, 241, 0.45);
-        --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
+        --bg-base: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-surface-elevated: #f1f5f9;
+        --bg-glass: rgba(255, 255, 255, 0.88);
+        --border-subtle: #e2e8f0;
+        --border-focus: #cbd5e1;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
         --text-muted: #64748b;
-        --accent-indigo: #6366f1;
-        --accent-indigo-hover: #4f46e5;
-        --accent-glow: rgba(99, 102, 241, 0.35);
-        --accent-emerald: #10b981;
+        --accent-dark: #0f172a;
+        --accent-indigo: #2563eb;
+        --accent-emerald: #059669;
         --font-display: 'Outfit', sans-serif;
         --font-body: 'Plus Jakarta Sans', sans-serif;
         --radius-sm: 8px;
         --radius-md: 14px;
-        --radius-lg: 20px;
+        --radius-lg: 18px;
         --radius-pill: 9999px;
-        --transition-fluid: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        --transition-fluid: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       /* --- Global Resets & Typography --- */
@@ -293,7 +288,7 @@ data:
         font-family: var(--font-display) !important;
         font-weight: 600;
         letter-spacing: -0.02em;
-        color: var(--text-primary);
+        color: var(--text-primary) !important;
       }
 
       a {
@@ -314,11 +309,11 @@ data:
 
       .navbar.sub-navbar {
         background: var(--bg-glass) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        backdrop-filter: blur(16px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
         border-bottom: 1px solid var(--border-subtle) !important;
         padding: 14px 0 !important;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03) !important;
       }
 
       .navbar-brand {
@@ -327,27 +322,23 @@ data:
         gap: 8px;
       }
       .luxury-logo-symbol {
-        font-size: 22px;
-        color: var(--accent-indigo);
+        font-size: 20px;
+        color: var(--accent-dark);
         line-height: 1;
-        filter: drop-shadow(0 0 10px var(--accent-glow));
       }
       .luxury-logo-text {
-        font-size: 19px;
+        font-size: 18px;
         font-weight: 700;
         letter-spacing: 2px;
-        color: #ffffff;
-      }
-      .luxury-logo-accent {
-        color: var(--accent-indigo);
+        color: var(--text-primary);
       }
 
       .gcp-platform {
-        display: none !important; /* Eliminate cluttered legacy banner */
+        display: none !important;
       }
 
       .currency-form select, .h-control select {
-        background: var(--bg-surface-elevated) !important;
+        background: #ffffff !important;
         color: var(--text-primary) !important;
         border: 1px solid var(--border-subtle) !important;
         border-radius: var(--radius-sm) !important;
@@ -356,35 +347,32 @@ data:
         transition: var(--transition-fluid);
       }
       .currency-form select:focus, .h-control select:focus {
-        border-color: var(--accent-indigo) !important;
-        box-shadow: 0 0 0 2px var(--accent-glow) !important;
+        border-color: var(--text-primary) !important;
         outline: none !important;
       }
 
       .cart-icon, .cart-icon svg, .cart-icon img {
-        filter: invert(1) brightness(1.8) !important;
+        filter: none !important;
         transition: var(--transition-fluid);
       }
       .cart-icon:hover {
-        transform: scale(1.1);
-        filter: invert(1) brightness(2.2) drop-shadow(0 0 8px var(--accent-glow)) !important;
+        transform: scale(1.08);
       }
 
-      /* --- Editorial Minimalist Hero Banner --- */
+      /* --- Studio Minimalist Hero Banner --- */
       .editorial-hero-container {
         position: relative;
         overflow: hidden;
         border-radius: var(--radius-lg);
-        margin: 28px auto 44px;
-        padding: 72px 48px;
-        background: linear-gradient(135deg, rgba(24, 34, 54, 0.9) 0%, rgba(13, 18, 30, 0.95) 100%),
-                    radial-gradient(circle at top right, rgba(99, 102, 241, 0.25) 0%, transparent 60%);
+        margin: 24px auto 36px;
+        padding: 64px 48px;
+        background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
         border: 1px solid var(--border-subtle);
-        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
       }
       .editorial-hero-container.mobile {
-        padding: 36px 24px;
-        margin: 16px auto 24px;
+        padding: 32px 20px;
+        margin: 16px auto 20px;
       }
 
       .editorial-hero-badge {
@@ -392,85 +380,82 @@ data:
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 2px;
-        color: #818cf8;
-        background: rgba(99, 102, 241, 0.14);
-        padding: 6px 14px;
+        color: var(--text-secondary);
+        background: #e2e8f0;
+        padding: 5px 12px;
         border-radius: var(--radius-pill);
-        border: 1px solid rgba(99, 102, 241, 0.25);
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         text-transform: uppercase;
       }
 
       .editorial-hero-title {
-        font-size: 46px;
+        font-size: 44px;
         line-height: 1.15;
         font-weight: 700;
         letter-spacing: -0.03em;
-        margin-bottom: 18px;
-        background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        margin-bottom: 16px;
+        color: var(--text-primary) !important;
       }
       @media (max-width: 768px) {
-        .editorial-hero-title { font-size: 32px; }
+        .editorial-hero-title { font-size: 30px; }
       }
 
       .editorial-hero-subtitle {
-        font-size: 17px;
+        font-size: 16px;
         line-height: 1.6;
         color: var(--text-secondary);
-        max-width: 620px;
-        margin-bottom: 32px;
+        max-width: 600px;
+        margin-bottom: 28px;
       }
 
       .editorial-hero-cta {
         display: flex;
-        gap: 16px;
+        gap: 12px;
         align-items: center;
         flex-wrap: wrap;
       }
 
       .editorial-btn-primary {
-        background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-indigo-hover) 100%);
+        background: var(--accent-dark);
         color: #ffffff !important;
         font-weight: 600;
         font-size: 14px;
         letter-spacing: 0.3px;
-        padding: 13px 28px;
+        padding: 12px 26px;
         border-radius: var(--radius-pill);
-        box-shadow: 0 4px 20px var(--accent-glow);
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
         transition: var(--transition-fluid);
         display: inline-flex;
         align-items: center;
         border: none;
       }
       .editorial-btn-primary:hover {
+        background: #1e293b;
         transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(99, 102, 241, 0.55);
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
         color: #ffffff !important;
       }
 
       .editorial-btn-secondary {
-        background: rgba(255, 255, 255, 0.05);
+        background: #ffffff;
         color: var(--text-primary) !important;
         font-weight: 500;
         font-size: 14px;
-        padding: 12px 24px;
+        padding: 11px 22px;
         border-radius: var(--radius-pill);
         border: 1px solid var(--border-subtle);
-        backdrop-filter: blur(10px);
         transition: var(--transition-fluid);
         cursor: pointer;
       }
       .editorial-btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
+        background: #f8fafc;
+        border-color: #cbd5e1;
         transform: translateY(-2px);
       }
 
       /* --- Category Filter System --- */
       .category-filter-container {
-        margin: 40px auto 32px;
+        margin: 36px auto 28px;
       }
 
       .catalog-header-flex {
@@ -478,16 +463,16 @@ data:
         justify-content: space-between;
         align-items: flex-end;
         flex-wrap: wrap;
-        gap: 20px;
-        margin-bottom: 24px;
+        gap: 16px;
+        margin-bottom: 20px;
         padding-bottom: 16px;
         border-bottom: 1px solid var(--border-subtle);
       }
 
       .catalog-section-title {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
-        margin: 0 0 6px 0;
+        margin: 0 0 4px 0;
       }
       .catalog-section-desc {
         color: var(--text-muted);
@@ -502,56 +487,56 @@ data:
       }
 
       .cat-pill {
-        background: var(--bg-surface);
+        background: #ffffff;
         color: var(--text-secondary);
         font-size: 13px;
         font-weight: 500;
-        padding: 8px 16px;
+        padding: 7px 16px;
         border-radius: var(--radius-pill);
         border: 1px solid var(--border-subtle);
         cursor: pointer;
         transition: var(--transition-fluid);
       }
       .cat-pill:hover {
-        background: var(--bg-surface-elevated);
+        background: #f1f5f9;
         color: var(--text-primary);
-        border-color: rgba(255, 255, 255, 0.15);
+        border-color: #cbd5e1;
       }
       .cat-pill.active {
-        background: var(--accent-indigo);
+        background: var(--accent-dark);
         color: #ffffff;
-        border-color: var(--accent-indigo);
-        box-shadow: 0 4px 16px var(--accent-glow);
+        border-color: var(--accent-dark);
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
       }
 
-      /* --- High-End Minimalist Product Cards --- */
+      /* --- High-Contrast Minimalist Product Cards --- */
       .hot-product-card {
         background: var(--bg-surface) !important;
         border-radius: var(--radius-lg) !important;
         border: 1px solid var(--border-subtle) !important;
         padding: 16px !important;
-        margin-bottom: 32px !important;
+        margin-bottom: 28px !important;
         transition: var(--transition-fluid) !important;
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: calc(100% - 32px);
+        height: calc(100% - 28px);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03) !important;
       }
 
       .hot-product-card:hover {
-        transform: translateY(-8px) !important;
-        background: var(--bg-surface-elevated) !important;
-        border-color: var(--border-focus) !important;
-        box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.7), 0 0 24px rgba(99, 102, 241, 0.18) !important;
+        transform: translateY(-6px) !important;
+        border-color: #cbd5e1 !important;
+        box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.08) !important;
       }
 
       .hot-product-card a {
         display: block;
         overflow: hidden;
         border-radius: var(--radius-md);
-        background: #0f1626;
+        background: #f1f5f9;
         position: relative;
         aspect-ratio: 1 / 1;
       }
@@ -560,15 +545,15 @@ data:
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
-        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
       }
 
       .hot-product-card:hover img {
-        transform: scale(1.07) !important;
+        transform: scale(1.05) !important;
       }
 
       .hot-product-card-img-overlay {
-        display: none !important; /* Remove dated legacy overlay */
+        display: none !important;
       }
 
       .hot-product-card-name {
@@ -590,7 +575,7 @@ data:
         font-size: 15px !important;
         font-weight: 700 !important;
         color: var(--accent-emerald) !important;
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
         letter-spacing: -0.01em;
       }
 
@@ -600,7 +585,7 @@ data:
         gap: 6px;
         font-size: 12px;
         font-weight: 600;
-        color: #818cf8;
+        color: var(--accent-indigo);
         opacity: 0.85;
         margin-top: 6px;
         transition: var(--transition-fluid);
@@ -608,23 +593,22 @@ data:
       .hot-product-card:hover .product-card-action-cue {
         opacity: 1;
         transform: translateX(4px);
-        color: #a5b4fc;
       }
 
       /* --- Product Detail & Cart Pages Overhaul --- */
       .h-product, .container.bg-light {
-        background: var(--bg-surface) !important;
+        background: #ffffff !important;
         border-radius: var(--radius-lg) !important;
         border: 1px solid var(--border-subtle) !important;
         color: var(--text-primary) !important;
-        box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
         padding: 36px !important;
         margin-top: 24px !important;
       }
 
       .product-image {
         border-radius: var(--radius-lg) !important;
-        box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5) !important;
+        box-shadow: 0 8px 24px -5px rgba(0,0,0,0.08) !important;
         border: 1px solid var(--border-subtle) !important;
       }
 
@@ -635,47 +619,48 @@ data:
       }
 
       .cymbal-button-primary, button[type="submit"] {
-        background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-indigo-hover) 100%) !important;
+        background: var(--accent-dark) !important;
         color: #ffffff !important;
         font-weight: 600 !important;
         border: none !important;
         border-radius: var(--radius-pill) !important;
         padding: 12px 28px !important;
-        box-shadow: 0 4px 18px var(--accent-glow) !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2) !important;
         transition: var(--transition-fluid) !important;
         cursor: pointer;
       }
       .cymbal-button-primary:hover, button[type="submit"]:hover {
+        background: #1e293b !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5) !important;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3) !important;
       }
 
-      /* --- Modern Luxury Footer --- */
+      /* --- Clean Minimalist Footer --- */
       .boutique-luxury-footer {
-        background: #060910 !important;
+        background: #ffffff !important;
         border-top: 1px solid var(--border-subtle) !important;
-        padding: 64px 0 48px !important;
-        margin-top: 80px !important;
+        padding: 56px 0 40px !important;
+        margin-top: 64px !important;
         text-align: center;
       }
       .footer-brand-title {
         font-family: var(--font-display);
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 700;
         letter-spacing: 3px;
-        color: #ffffff;
+        color: var(--text-primary);
         margin-bottom: 6px;
       }
       .footer-tagline {
         color: var(--text-muted);
         font-size: 14px;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
       }
       .footer-divider {
-        width: 48px;
+        width: 40px;
         height: 2px;
-        background: var(--accent-indigo);
-        margin: 0 auto 24px;
+        background: var(--accent-dark);
+        margin: 0 auto 20px;
         border-radius: var(--radius-pill);
       }
       .footer-text {
@@ -686,35 +671,41 @@ data:
       .session-badge {
         display: inline-block;
         font-size: 11px;
-        color: #64748b;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--text-secondary);
+        background: #f1f5f9;
+        border: 1px solid var(--border-subtle);
         padding: 4px 12px;
         border-radius: var(--radius-pill);
       }
 
-      /* --- Seamless Harmonic AI Assistant (Dialogflow CX Integration) --- */
+      /* --- DIALOGFLOW MESSENGER: 100% VISIBILITY & HIGH-CONTRAST --- */
       df-messenger {
         z-index: 99999;
         position: fixed;
-        bottom: 28px;
-        right: 28px;
-        /* Sleek luxury dark theme variables matching the aesthetic */
-        --df-messenger-button-titlebar-color: #111827;
-        --df-messenger-chat-background: #0b0f19;
-        --df-messenger-font-color: #f8fafc;
-        --df-messenger-send-icon: #818cf8;
-        --df-messenger-user-message: #4338ca;
-        --df-messenger-bot-message: #1e293b;
-        --df-messenger-titlebar-title-align: left;
-        --df-messenger-chat-border-radius: 20px;
-        --df-messenger-message-border-radius: 14px;
-        filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.6));
+        bottom: 24px;
+        right: 24px;
+        /* Official Dialogflow CSS Variables with High-Contrast Text */
+        --df-messenger-primary-color: #2563eb;
+        --df-messenger-border-color: #e2e8f0;
+        --df-messenger-chat-background: #ffffff;
+        --df-messenger-titlebar-background: #0f172a;
+        --df-messenger-titlebar-font-color: #ffffff;
+        --df-messenger-element-font-color: #0f172a;
+        --df-messenger-message-bot-background: #f1f5f9;
+        --df-messenger-message-user-background: #dbeafe;
+        --df-messenger-input-box-background: #ffffff;
+        --df-messenger-input-background: #ffffff;
+        --df-messenger-chat-bubble-background: #0f172a;
+        --df-messenger-chat-bubble-icon-color: #ffffff;
+        --df-messenger-chat-border-radius: 16px;
+        --df-messenger-chat-window-width: 360px;
+        --df-messenger-chat-window-height: 520px;
+        filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.15));
       }
 
       df-messenger-chat-bubble {
-        filter: drop-shadow(0 6px 20px rgba(99, 102, 241, 0.45));
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        filter: drop-shadow(0 4px 14px rgba(15, 23, 42, 0.3));
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
       df-messenger-chat-bubble:hover {
         transform: scale(1.08);
@@ -722,8 +713,8 @@ data:
 
       @media (max-width: 600px) {
         df-messenger {
-          bottom: 16px;
-          right: 16px;
+          bottom: 14px;
+          right: 14px;
         }
       }
     </style>
