@@ -55,11 +55,13 @@ data:
         dfElem.setAttribute('location', 'global');
         dfElem.setAttribute('project-id', 'bitcitychamp-project');
         dfElem.setAttribute('agent-id', '7f6c3a7a-8257-42b0-8161-97b07f9f06dd');
-        dfElem.setAttribute('language-code', 'en');
+        var userLang = (navigator.language && navigator.language.startsWith('es')) ? 'es' : 'en';
+        dfElem.setAttribute('language-code', userLang);
         dfElem.setAttribute('max-query-length', '-1');
 
         var dfBubble = document.createElement('df-messenger-chat-bubble');
-        dfBubble.setAttribute('chat-title', 'Online Boutique AI Assistant');
+        dfBubble.setAttribute('chat-title', userLang === 'es' ? 'Asistente IA Online Boutique' : 'Online Boutique AI Assistant');
+        dfBubble.setAttribute('placeholder-text', userLang === 'es' ? 'Pregunta sobre productos, precios, envíos...' : 'Ask about products, prices, shipping...');
         dfElem.appendChild(dfBubble);
 
         document.body.appendChild(dfElem);
