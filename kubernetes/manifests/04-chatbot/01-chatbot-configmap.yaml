@@ -23,9 +23,9 @@ data:
         <div class="footer-top">
             <div class="container footer-social">
                 <div class="footer-brand-title">ONLINE BOUTIQUE</div>
-                <p class="footer-tagline">Curated Minimalist Lifestyle, Living &amp; Everyday Technology</p>
+                <p class="footer-tagline">Colección Exclusiva &bull; Moda, Tecnología y Hogar</p>
                 <div class="footer-divider"></div>
-                <p class="footer-text">&copy; 2020-{{ .currentYear }} Online Boutique LLC &bull; Advanced Cloud Architecture</p>
+                <p class="footer-text">&copy; 2020-{{ .currentYear }} Online Boutique LLC &bull; Arquitectura Cloud Nativa</p>
                 <p class="footer-text">
                     <span class="session-badge">
                         {{ with $.session_id }}
@@ -60,7 +60,7 @@ data:
         dfScript.async = true;
         document.head.appendChild(dfScript);
 
-        // Clear any stored chat session upon reload
+        // Clear any stored chat session upon reload so each refresh gives a fresh conversation
         try {
           sessionStorage.removeItem('messages');
           sessionStorage.removeItem('sessionID');
@@ -75,13 +75,13 @@ data:
         dfElem.setAttribute('project-id', 'bitcitychamp-project');
         dfElem.setAttribute('agent-id', '7f6c3a7a-8257-42b0-8161-97b07f9f06dd');
         dfElem.setAttribute('storage-option', 'none');
-        var userLang = (navigator.language && navigator.language.startsWith('es')) ? 'es' : 'en';
-        dfElem.setAttribute('language-code', userLang);
+        // Default to Spanish for immediate natural conversational assistance
+        dfElem.setAttribute('language-code', 'es');
         dfElem.setAttribute('max-query-length', '-1');
 
         var dfBubble = document.createElement('df-messenger-chat-bubble');
-        dfBubble.setAttribute('chat-title', userLang === 'es' ? 'Asistente IA &bull; Online Boutique' : 'AI Assistant &bull; Online Boutique');
-        dfBubble.setAttribute('placeholder-text', userLang === 'es' ? 'Pregunta sobre productos, envíos, precios...' : 'Ask about products, shipping, prices...');
+        dfBubble.setAttribute('chat-title', 'Asistente IA • Online Boutique');
+        dfBubble.setAttribute('placeholder-text', 'Pregunta sobre maletas, calzado, ropa, envíos...');
         dfElem.appendChild(dfBubble);
 
         document.body.appendChild(dfElem);
@@ -109,19 +109,19 @@ data:
             brand.innerHTML = '<span class="luxury-logo-symbol">&#x25C7;</span><span class="luxury-logo-text">ONLINE BOUTIQUE</span>';
           }
 
-          // B. Minimalist Studio Editorial Hero
+          // B. Minimalist Studio Editorial Hero (Desktop & Mobile)
           var desktopHero = document.querySelector('.home-desktop-hero-banner');
           if (desktopHero && !desktopHero.dataset.styled) {
             desktopHero.dataset.styled = 'true';
             desktopHero.innerHTML = [
               '<div class="editorial-hero-container">',
               '  <div class="editorial-hero-content">',
-              '    <span class="editorial-hero-badge">NEW SEASON &bull; 60+ EXCLUSIVE PIECES</span>',
-              '    <h1 class="editorial-hero-title">Curated Essentials.<br>Architectural Simplicity.</h1>',
-              '    <p class="editorial-hero-subtitle">Timeless designs crafted with uncompromising quality, sustainable materials, and minimalist elegance.</p>',
+              '    <span class="editorial-hero-badge">TEMPORADA 2026 &bull; MÁS DE 60 PIEZAS EXCLUSIVAS</span>',
+              '    <h1 class="editorial-hero-title">Esenciales Curados.<br>Simplicidad Arquitectónica.</h1>',
+              '    <p class="editorial-hero-subtitle">Diseños atemporales confeccionados con calidad insuperable, materiales sostenibles y elegancia minimalista.</p>',
               '    <div class="editorial-hero-cta">',
-              '      <a href="#catalog-grid" class="editorial-btn-primary">Explore Catalog</a>',
-              '      <button type="button" class="editorial-btn-secondary" onclick="openChatConcierge()">Consult AI Concierge</button>',
+              '      <a href="#catalog-grid" class="editorial-btn-primary">Explorar Catálogo</a>',
+              '      <button type="button" class="editorial-btn-secondary" onclick="openChatConcierge()">Consultar Asistente IA</button>',
               '    </div>',
               '  </div>',
               '</div>'
@@ -133,15 +133,19 @@ data:
             mobileHero.dataset.styled = 'true';
             mobileHero.innerHTML = [
               '<div class="editorial-hero-container mobile">',
-              '  <span class="editorial-hero-badge">COLLECTION 2026</span>',
-              '  <h2 class="editorial-hero-title">Curated Essentials.</h2>',
-              '  <p class="editorial-hero-subtitle">60+ exclusive pieces designed for everyday elegance.</p>',
+              '  <span class="editorial-hero-badge">COLECCIÓN 2026 &bull; 60+ PIEZAS</span>',
+              '  <h2 class="editorial-hero-title">Esenciales Curados.<br>Diseño Minimalista.</h2>',
+              '  <p class="editorial-hero-subtitle">Descubre calzado, ropa, accesorios y tecnología para tu día a día.</p>',
+              '  <div class="editorial-hero-cta">',
+              '    <a href="#catalog-grid" class="editorial-btn-primary">Ver Colección</a>',
+              '    <button type="button" class="editorial-btn-secondary" onclick="openChatConcierge()">Asistente IA</button>',
+              '  </div>',
               '</div>'
             ].join('\n');
           }
 
           // C. Category Filter Bar
-          var productGrid = document.querySelector('.row.hot-product-row, .row.products-row, .row:has(.hot-product-card)');
+          var productGrid = document.querySelector('.row.hot-product-row, .row.hot-products-row, .row.products-row, .row:has(.hot-product-card)');
           if (!productGrid) {
             var cards = document.querySelectorAll('.hot-product-card');
             if (cards.length > 0) {
@@ -157,18 +161,18 @@ data:
             filterBar.innerHTML = [
               '<div class="catalog-header-flex">',
               '  <div>',
-              '    <h2 class="catalog-section-title">The Curated Collection</h2>',
-              '    <p class="catalog-section-desc">Showing 60+ handcrafted pieces &bull; Worldwide shipping &bull; 30-day returns</p>',
+              '    <h2 class="catalog-section-title">Colección Curada</h2>',
+              '    <p class="catalog-section-desc">Más de 60 piezas exclusivas &bull; Envíos globales &bull; Devolución garantizada</p>',
               '  </div>',
               '  <div class="category-pills" id="category-pills">',
-              '    <button class="cat-pill active" data-cat="all">All (62)</button>',
-              '    <button class="cat-pill" data-cat="accessories">Accessories</button>',
-              '    <button class="cat-pill" data-cat="clothing">Apparel</button>',
-              '    <button class="cat-pill" data-cat="footwear">Footwear</button>',
-              '    <button class="cat-pill" data-cat="watches">Timepieces</button>',
-              '    <button class="cat-pill" data-cat="electronics">Electronics</button>',
-              '    <button class="cat-pill" data-cat="home">Home &amp; Living</button>',
-              '    <button class="cat-pill" data-cat="beauty">Beauty</button>',
+              '    <button class="cat-pill active" data-cat="all">Todos (62)</button>',
+              '    <button class="cat-pill" data-cat="accessories">Accesorios y Bolsos</button>',
+              '    <button class="cat-pill" data-cat="clothing">Ropa y Moda</button>',
+              '    <button class="cat-pill" data-cat="footwear">Calzado</button>',
+              '    <button class="cat-pill" data-cat="watches">Relojes</button>',
+              '    <button class="cat-pill" data-cat="electronics">Tecnología</button>',
+              '    <button class="cat-pill" data-cat="home">Hogar y Decoración</button>',
+              '    <button class="cat-pill" data-cat="beauty">Belleza</button>',
               '  </div>',
               '</div>'
             ].join('\n');
@@ -184,7 +188,7 @@ data:
             });
           }
 
-          // D. Product card badges
+          // D. Product card badges & action cue
           var cards = document.querySelectorAll('.hot-product-card');
           cards.forEach(function(card) {
             if (card.dataset.enhanced) return;
@@ -197,7 +201,7 @@ data:
             if (titleElem && priceElem && linkElem) {
               var actionTag = document.createElement('div');
               actionTag.className = 'product-card-action-cue';
-              actionTag.innerHTML = '<span>View Piece</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+              actionTag.innerHTML = '<span>Ver Artículo</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
               card.appendChild(actionTag);
             }
           });
@@ -223,10 +227,10 @@ data:
             name = name.toLowerCase();
 
             var matches = false;
-            if (cat === 'accessories' && (name.includes('sunglass') || name.includes('wallet') || name.includes('backpack') || name.includes('tote') || name.includes('scarf') || name.includes('cap') || name.includes('bag') || name.includes('collar') || name.includes('chain') || name.includes('cuff'))) matches = true;
+            if (cat === 'accessories' && (name.includes('sunglass') || name.includes('wallet') || name.includes('backpack') || name.includes('tote') || name.includes('scarf') || name.includes('cap') || name.includes('bag') || name.includes('collar') || name.includes('chain') || name.includes('cuff') || name.includes('maleta') || name.includes('bolso'))) matches = true;
             if (cat === 'clothing' && (name.includes('tank') || name.includes('t-shirt') || name.includes('denim') || name.includes('coat') || name.includes('blazer') || name.includes('sweater') || name.includes('polo') || name.includes('trousers') || name.includes('hoodie') || name.includes('shirt'))) matches = true;
-            if (cat === 'footwear' && (name.includes('loafer') || name.includes('sneaker') || name.includes('boot') || name.includes('runner') || name.includes('oxford') || name.includes('heel') || name.includes('sandal') || name.includes('espadrille') || name.includes('moccasin') || name.includes('shoe'))) matches = true;
-            if (cat === 'watches' && (name.includes('watch') || name.includes('chronograph') || name.includes('strap') || name.includes('fitness'))) matches = true;
+            if (cat === 'footwear' && (name.includes('loafer') || name.includes('sneaker') || name.includes('boot') || name.includes('runner') || name.includes('oxford') || name.includes('heel') || name.includes('sandal') || name.includes('espadrille') || name.includes('moccasin') || name.includes('shoe') || name.includes('zapato'))) matches = true;
+            if (cat === 'watches' && (name.includes('watch') || name.includes('chronograph') || name.includes('strap') || name.includes('fitness') || name.includes('reloj'))) matches = true;
             if (cat === 'electronics' && (name.includes('headphone') || name.includes('earbud') || name.includes('keyboard') || name.includes('mouse') || name.includes('speaker') || name.includes('camera') || name.includes('charging') || name.includes('dac') || name.includes('hairdryer'))) matches = true;
             if (cat === 'home' && (name.includes('candle') || name.includes('mug') || name.includes('jar') || name.includes('salt') || name.includes('coffee') || name.includes('lamp') || name.includes('bowl') || name.includes('diffuser') || name.includes('chair') || name.includes('cup') || name.includes('journal'))) matches = true;
             if (cat === 'beauty' && (name.includes('parfum') || name.includes('oil') || name.includes('serum') || name.includes('fragrance') || name.includes('hairdryer'))) matches = true;
@@ -254,7 +258,7 @@ data:
         --bg-base: #f8fafc;
         --bg-surface: #ffffff;
         --bg-surface-elevated: #f1f5f9;
-        --bg-glass: rgba(255, 255, 255, 0.88);
+        --bg-glass: rgba(255, 255, 255, 0.92);
         --border-subtle: #e2e8f0;
         --border-focus: #cbd5e1;
         --text-primary: #0f172a;
@@ -337,25 +341,74 @@ data:
         display: none !important;
       }
 
-      .currency-form select, .h-control select {
+      /* ======================================================================= */
+      /* Fix Currency Selector: Remove overlapping $ icon & arrow glitches       */
+      /* ======================================================================= */
+      header img.currency-icon, 
+      header span.currency-icon, 
+      .currency-icon,
+      .icon.currency-icon,
+      header .icon.arrow,
+      .h-control .icon.arrow {
+        display: none !important;
+      }
+
+      .controls {
+        display: flex !important;
+        align-items: center !important;
+        gap: 16px !important;
+      }
+
+      .h-controls {
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .h-control {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+      }
+
+      .h-control form, .currency-form, .controls-form {
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .currency-form select, 
+      .h-control select, 
+      select[name="currency_code"] {
         background: #ffffff !important;
         color: var(--text-primary) !important;
         border: 1px solid var(--border-subtle) !important;
         border-radius: var(--radius-sm) !important;
-        padding: 6px 12px !important;
+        padding: 6px 14px !important;
         font-size: 13px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px !important;
+        height: 38px !important;
+        line-height: normal !important;
+        cursor: pointer !important;
+        appearance: auto !important;
+        -webkit-appearance: menulist !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         transition: var(--transition-fluid);
       }
-      .currency-form select:focus, .h-control select:focus {
+      .currency-form select:focus, 
+      .h-control select:focus, 
+      select[name="currency_code"]:focus {
         border-color: var(--text-primary) !important;
         outline: none !important;
+        box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1) !important;
       }
 
-      .cart-icon, .cart-icon svg, .cart-icon img {
+      .cart-icon, .cart-icon svg, .cart-icon img, .cart-link img {
         filter: none !important;
         transition: var(--transition-fluid);
       }
-      .cart-icon:hover {
+      .cart-link:hover img {
         transform: scale(1.08);
       }
 
@@ -370,11 +423,6 @@ data:
         border: 1px solid var(--border-subtle);
         box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
       }
-      .editorial-hero-container.mobile {
-        padding: 32px 20px;
-        margin: 16px auto 20px;
-      }
-
       .editorial-hero-badge {
         display: inline-block;
         font-size: 11px;
@@ -395,9 +443,6 @@ data:
         letter-spacing: -0.03em;
         margin-bottom: 16px;
         color: var(--text-primary) !important;
-      }
-      @media (max-width: 768px) {
-        .editorial-hero-title { font-size: 30px; }
       }
 
       .editorial-hero-subtitle {
@@ -698,8 +743,8 @@ data:
         --df-messenger-chat-bubble-background: #0f172a;
         --df-messenger-chat-bubble-icon-color: #ffffff;
         --df-messenger-chat-border-radius: 16px;
-        --df-messenger-chat-window-width: 360px;
-        --df-messenger-chat-window-height: 520px;
+        --df-messenger-chat-window-width: 380px;
+        --df-messenger-chat-window-height: 540px;
         filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.15));
       }
 
@@ -711,10 +756,202 @@ data:
         transform: scale(1.08);
       }
 
-      @media (max-width: 600px) {
+      /* ======================================================================= */
+      /* Comprehensive Mobile & Responsive Layout System (<= 768px)             */
+      /* ======================================================================= */
+      @media (max-width: 768px) {
+        /* Container Spacing & Layout */
+        .container-fluid {
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+        }
+
+        .px-10-percent {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        .hot-products-row {
+          margin-left: -6px !important;
+          margin-right: -6px !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+          display: flex !important;
+          flex-wrap: wrap !important;
+        }
+
+        /* 2-Column Responsive Product Grid on Mobile */
+        .hot-product-card {
+          flex: 0 0 50% !important;
+          max-width: 50% !important;
+          padding: 10px !important;
+          margin-bottom: 12px !important;
+          border-radius: var(--radius-md) !important;
+          height: auto !important;
+        }
+
+        .hot-product-card-name {
+          font-size: 13px !important;
+          height: 36px !important;
+          line-height: 1.3 !important;
+          margin-top: 8px !important;
+          margin-bottom: 2px !important;
+        }
+
+        .hot-product-card-price {
+          font-size: 14px !important;
+          margin-bottom: 4px !important;
+        }
+
+        .product-card-action-cue {
+          font-size: 11px !important;
+          margin-top: 4px !important;
+        }
+
+        /* Horizontal Scrollable Category Filter Pills */
+        .catalog-header-flex {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          gap: 12px !important;
+          margin-bottom: 14px !important;
+        }
+
+        .catalog-section-title {
+          font-size: 20px !important;
+        }
+
+        .catalog-section-desc {
+          font-size: 13px !important;
+        }
+
+        .category-pills {
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+          padding-bottom: 8px !important;
+          width: 100% !important;
+          scrollbar-width: none;
+        }
+        .category-pills::-webkit-scrollbar {
+          display: none;
+        }
+
+        .cat-pill {
+          white-space: nowrap !important;
+          flex-shrink: 0 !important;
+          padding: 6px 14px !important;
+          font-size: 12px !important;
+        }
+
+        /* Mobile Hero Banner */
+        .home-mobile-hero-banner {
+          background: none !important;
+          height: auto !important;
+        }
+
+        .editorial-hero-container.mobile {
+          padding: 24px 16px !important;
+          margin: 12px 0 20px 0 !important;
+          border-radius: 14px !important;
+          background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        .editorial-hero-badge {
+          font-size: 10px !important;
+          padding: 4px 10px !important;
+          margin-bottom: 10px !important;
+        }
+
+        .editorial-hero-title {
+          font-size: 24px !important;
+          line-height: 1.25 !important;
+          margin-bottom: 10px !important;
+        }
+
+        .editorial-hero-subtitle {
+          font-size: 13px !important;
+          line-height: 1.5 !important;
+          margin-bottom: 18px !important;
+        }
+
+        .editorial-hero-cta {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 10px !important;
+          width: 100% !important;
+        }
+
+        .editorial-btn-primary, .editorial-btn-secondary {
+          width: 100% !important;
+          justify-content: center !important;
+          text-align: center !important;
+          padding: 11px 18px !important;
+          font-size: 13px !important;
+        }
+
+        /* Navbar & Currency Controls on Mobile */
+        .navbar.sub-navbar {
+          padding: 10px 0 !important;
+        }
+
+        .navbar-brand .luxury-logo-symbol {
+          font-size: 17px !important;
+        }
+
+        .navbar-brand .luxury-logo-text {
+          font-size: 14px !important;
+          letter-spacing: 1px !important;
+        }
+
+        .controls {
+          gap: 8px !important;
+        }
+
+        .currency-form select, 
+        .h-control select, 
+        select[name="currency_code"] {
+          padding: 4px 8px !important;
+          font-size: 12px !important;
+          height: 32px !important;
+          min-width: 60px !important;
+        }
+
+        .cart-link img {
+          width: 24px !important;
+          height: 24px !important;
+        }
+
+        /* Responsive Mobile Chatbot Dimensions */
         df-messenger {
-          bottom: 14px;
-          right: 14px;
+          bottom: 12px !important;
+          right: 12px !important;
+          --df-messenger-chat-window-width: calc(100vw - 24px) !important;
+          --df-messenger-chat-window-height: 75vh !important;
+          --df-messenger-chat-border-radius: 16px !important;
+        }
+
+        /* Product Detail & Cart on Mobile */
+        .h-product, .container.bg-light {
+          padding: 20px 14px !important;
+          margin-top: 14px !important;
+        }
+
+        .product-price {
+          font-size: 22px !important;
+        }
+
+        .cymbal-button-primary, button[type="submit"] {
+          width: 100% !important;
+          text-align: center !important;
+          padding: 12px 18px !important;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .hot-product-card {
+          flex: 0 0 100% !important;
+          max-width: 100% !important;
         }
       }
     </style>
