@@ -51,6 +51,177 @@ resource "google_dialogflow_cx_agent" "boutique_agent" {
 }
 
 # ------------------------------------------------------------------------------
+# 3. Conversational Intents for Online Boutique Inventory & Logistics
+# ------------------------------------------------------------------------------
+resource "google_dialogflow_cx_intent" "intent_sunglasses" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.products.sunglasses"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "quiero unas gafas, vendes algunas?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "I want glasses, do you have?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "sunglasses"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "gafas de sol"
+    }
+  }
+}
+
+resource "google_dialogflow_cx_intent" "intent_loafers" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.products.loafers"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "necesito unos zapatos"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "vendes zapatos?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "Loafers vendes?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "I need shoes"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "loafers"
+    }
+  }
+}
+
+resource "google_dialogflow_cx_intent" "intent_watch" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.products.watch"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "quiero un reloj"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "vendes relojes?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "I want a watch"
+    }
+  }
+}
+
+resource "google_dialogflow_cx_intent" "intent_catalog" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.products.catalog"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "qué productos tienen?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "muéstrame el catálogo"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "what products do you sell?"
+    }
+  }
+}
+
+resource "google_dialogflow_cx_intent" "intent_shipping" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.shipping.info"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "cuánto tarda el envío?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "tiempos de entrega"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "how long does delivery take?"
+    }
+  }
+}
+
+resource "google_dialogflow_cx_intent" "intent_pricing" {
+  parent       = google_dialogflow_cx_agent.boutique_agent.id
+  display_name = "store.pricing.info"
+  priority     = 500000
+
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "cuáles son los precios?"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "precios"
+    }
+  }
+  training_phrases {
+    repeat_count = 1
+    parts {
+      text = "what are your prices?"
+    }
+  }
+}
+
+# ------------------------------------------------------------------------------
 # 3. Outputs for Application & Frontend Manifest Integration
 # ------------------------------------------------------------------------------
 output "chatbot_agent_id" {
